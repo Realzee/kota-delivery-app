@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kota Delivery App · Driver</title>
+<script>
+(function(){
+  var KEY='kota_theme';
+  function current(){ return document.documentElement.getAttribute('data-theme')||'light'; }
+  function setIcon(){ var t=current(); document.querySelectorAll('[data-theme-icon]').forEach(function(el){ el.textContent=t==='dark'?'☀️':'🌙'; }); }
+  function apply(theme){ document.documentElement.setAttribute('data-theme', theme); try{ localStorage.setItem(KEY, theme);}catch(e){} setIcon(); }
+  var saved=null; try{ saved=localStorage.getItem(KEY);}catch(e){}
+  var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  apply(saved||(prefersDark?'dark':'light'));
+  window.toggleTheme=function(){ apply(current()==='dark'?'light':'dark'); };
+  document.addEventListener('DOMContentLoaded', setIcon);
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --bg:#f6f7f9;--card:#fff;--surface2:#f0f2f5;--border:#e8eaed;--text:#1a1a1a;--muted:#6b7280;
+  --brand:#ff5c1a;--green:#06c167;--green-dim:rgba(6,193,103,.12);--blue:#3b82f6;--blue-dim:rgba(59,130,246,.12);
+  --header-bg:rgba(255,255,255,.96);--input-bg:#fff;--shadow:0 2px 12px rgba(0,0,0,.06);--radius:14px;
+}
+[data-theme="dark"]{
+  --bg:#0b0c0f;--card:#14161a;--surface2:#1c1f26;--border:#2a2e38;--text:#f1f3f5;--muted:#8b93a7;
+  --brand:#ff5c1a;--green:#22c55e;--green-dim:rgba(34,197,94,.15);--blue:#3b82f6;--blue-dim:rgba(59,130,246,.15);
+  --header-bg:rgba(11,12,15,.96);--input-bg:#1c1f26;--shadow:0 2px 16px rgba(0,0,0,.35);--radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:50;background:var(--header-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px}
+.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#60a5fa);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+.brand h1{font-size:1.02rem;font-weight:700}
+.brand span{font-size:.7rem;color:var(--muted);display:block}
+.header-right{display:flex;align-items:center;gap:8px}
+.live-pill{display:flex;align-items:center;gap:6px;background:var(--green-dim);color:var(--green);font-size:.7rem;font-weight:700;padding:5px 11px;border-radius:20px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.theme-btn,.icon-btn{width:38px;height:38px;border-radius:11px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;font-size:1rem;display:inline-flex;align-items:center;justify-content:center}
+.sync-label{font-size:.68rem;color:var(--muted)}
+.tabs{display:flex;gap:2px;padding:10px 12px 0;border-bottom:1px solid var(--border)}
+.tabs button{flex:1;padding:11px 8px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent}
+.tabs button.active{color:var(--brand);border-bottom-color:var(--brand)}
+.panel{display:none;padding:16px 14px 56px;max-width:560px;margin:0 auto}
+.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h3{font-size:1.05rem;font-weight:700}
+.meta{font-size:.82rem;color:var(--muted);margin-top:3px}
+.address-box{background:var(--surface2);border-radius:10px;padding:12px;margin:10px 0;font-size:.95rem;font-weight:500}
+.items-list{font-size:.88rem;color:var(--muted);margin:6px 0;line-height:1.45}
+.total-row{display:flex;justify-content:space-between;font-weight:700;font-size:1.05rem;color:var(--brand);margin-top:8px}
+.badge{font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:20px}
+.badge.ready{background:var(--green-dim);color:var(--green)}
+.badge.out{background:rgba(249,115,22,.15);color:#fb923c}
+.badge.mine{background:var(--blue-dim);color:#60a5fa}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 16px;border:none;border-radius:10px;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;width:100%}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-sm{padding:8px 12px;font-size:.8rem;width:auto}
+.actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.actions-row{display:flex;gap:8px}
+.actions-row .btn,.actions-row a.btn{flex:1;text-decoration:none;text-align:center}
+.empty{text-align:center;padding:56px 16px;color:var(--muted)}
+.empty-icon{font-size:2.6rem;margin-bottom:12px;opacity:.45}
+.login-box{max-width:360px;margin:48px auto;padding:0 16px}
+.login-box h2{font-size:1.25rem;font-weight:700;margin-bottom:8px;text-align:center}
+.login-box p{color:var(--muted);font-size:.9rem;text-align:center;margin-bottom:16px}
+input{width:100%;padding:13px 14px;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:1rem}
+input:focus{outline:none;border-color:var(--brand)}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section-head h2{font-size:1.1rem;font-weight:700}
+.count-badge{background:var(--brand);color:#fff;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:20px}
+.cash-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px}
+.cash-box .num{font-size:2rem;font-weight:800;color:var(--brand)}
+.cash-box .lbl{font-size:.8rem;color:var(--muted);margin-top:4px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--brand);color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;font-size:.9rem;z-index:100;opacity:0;transition:all .3s;max-width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.new-banner{background:var(--green-dim);border:1px solid var(--green);color:var(--green);padding:10px 14px;border-radius:10px;font-size:.85rem;font-weight:600;margin-bottom:12px;display:none;text-align:center}
+.new-banner.show{display:block}
+.login-error{display:none;color:#ef4444;font-size:.85rem;font-weight:600;text-align:center;margin-bottom:10px}
+/* Modal */
+#app-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:16px}
+#app-modal .box{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:16px;max-width:360px;width:100%;padding:20px;box-shadow:var(--shadow)}
+#app-modal h3{font-size:1.05rem;font-weight:800;margin-bottom:8px}
+#app-modal p{font-size:.9rem;color:var(--muted);margin-bottom:16px;line-height:1.45}
+#app-modal .row{display:flex;gap:8px}
+#app-modal .row .btn{flex:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="brand-icon">D</div>
+    <div><h1>Kota Delivery App</h1><span id="driver-label">Driver</span></div>
+  </div>
+  <div class="header-right">
+    <span class="sync-label" id="sync-label">—</span>
+    <button type="button" class="theme-btn" onclick="toggleTheme()" title="Toggle theme"><span data-theme-icon>🌙</span></button>
+    <button type="button" class="icon-btn" id="logout-btn" onclick="logout()" style="display:none;font-size:.7rem;font-weight:700;width:auto;padding:0 10px">Log out</button>
+    <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+  </div>
+</header>
+
+<div id="login-screen" class="login-box">
+  <div style="text-align:center;margin-bottom:16px">
+    <div class="brand-icon" style="margin:0 auto 12px;width:56px;height:56px;font-size:1.4rem">D</div>
+    <h2>Driver login</h2>
+    <p>Enter your name and PIN to see ready orders</p>
+  </div>
+  <p class="login-error" id="login-error"></p>
+  <div style="margin-bottom:12px">
+    <label style="display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:4px">Your name</label>
+    <input type="text" id="driver-name" placeholder="e.g. Sipho" autocomplete="name">
+  </div>
+  <div style="margin-bottom:16px">
+    <label style="display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:4px">PIN</label>
+    <input type="password" id="driver-pin" placeholder="4-digit PIN" inputmode="numeric" maxlength="6" autocomplete="current-password">
+  </div>
+  <button type="button" class="btn btn-primary" id="login-btn">Log in</button>
+  <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:14px">Default PIN: <strong style="color:var(--text)">1234</strong></p>
+</div>
+
+<div id="app-screen" style="display:none">
+  <div class="tabs">
+    <button class="active" data-panel="ready" type="button">Ready</button>
+    <button data-panel="mine" type="button">My runs</button>
+    <button data-panel="done" type="button">Cash</button>
+  </div>
+  <div class="panel active" id="panel-ready">
+    <div class="new-banner" id="new-banner">🛵 New order ready for pickup!</div>
+    <div class="section-head">
+      <h2>Available <span class="count-badge" id="ready-count">0</span></h2>
+      <button class="btn btn-secondary btn-sm" type="button" id="refresh-btn">↻</button>
+    </div>
+    <div id="ready-list"></div>
+  </div>
+  <div class="panel" id="panel-mine">
+    <div class="section-head"><h2>My deliveries <span class="count-badge" id="mine-count">0</span></h2></div>
+    <div id="mine-list"></div>
+  </div>
+  <div class="panel" id="panel-done">
+    <div class="cash-box">
+      <div class="num" id="cash-total">R0</div>
+      <div class="lbl">Cash to hand in today</div>
+    </div>
+    <div id="done-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="app-modal">
+  <div class="box">
+    <h3 id="app-modal-title">Confirm</h3>
+    <p id="app-modal-msg"></p>
+    <div class="row">
+      <button type="button" class="btn btn-secondary" id="app-modal-cancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="app-modal-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHEETS = "https://script.google.com/macros/s/AKfycbxg71IdS6OulHZdeYds79butV1ku-E1I2YSBkkb3R8vU3eim03nYq3QrK1TNdAtqiaWAQ/exec";
+const DRIVER_PIN = "1234";
+let driverName = "";
+let orders = [];
+let lastReadyIds = new Set();
+let myClaims = {};
+let pollTimer = null;
+let localStatus = {};
+
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2800);
+}
+function showConfirm(title, message, okLabel) {
+  return new Promise(function (resolve) {
+    const modal = document.getElementById("app-modal");
+    document.getElementById("app-modal-title").textContent = title || "Confirm";
+    document.getElementById("app-modal-msg").textContent = message || "";
+    const ok = document.getElementById("app-modal-ok");
+    const cancel = document.getElementById("app-modal-cancel");
+    ok.textContent = okLabel || "Confirm";
+    modal.style.display = "flex";
+    function done(v) {
+      modal.style.display = "none";
+      ok.onclick = null;
+      cancel.onclick = null;
+      resolve(v);
+    }
+    ok.onclick = function () { done(true); };
+    cancel.onclick = function () { done(false); };
+  });
+}
+function showLoginError(msg) {
+  const err = document.getElementById("login-error");
+  err.style.display = msg ? "block" : "none";
+  err.textContent = msg || "";
+}
+function enterApp(name) {
+  driverName = name;
+  try { myClaims = JSON.parse(localStorage.getItem("kota_claims_" + name) || "{}"); } catch (e) { myClaims = {}; }
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("app-screen").style.display = "block";
+  document.getElementById("driver-label").textContent = name;
+  document.getElementById("logout-btn").style.display = "inline-flex";
+  toast("Logged in as " + name);
+  loadData(true);
+  startPolling();
+}
+function startDriver() {
+  showLoginError("");
+  const n = (document.getElementById("driver-name").value || "").trim();
+  const pin = (document.getElementById("driver-pin").value || "").trim();
+  if (!n) { showLoginError("Please enter your name"); return; }
+  if (pin !== DRIVER_PIN) { showLoginError("Incorrect PIN. Use 1234"); return; }
+  localStorage.setItem("kota_driver", n);
+  localStorage.setItem("kota_driver_ok", "1");
+  enterApp(n);
+}
+function logout() {
+  localStorage.removeItem("kota_driver_ok");
+  localStorage.removeItem("kota_driver");
+  driverName = "";
+  if (pollTimer) clearInterval(pollTimer);
+  document.getElementById("app-screen").style.display = "none";
+  document.getElementById("login-screen").style.display = "block";
+  document.getElementById("driver-pin").value = "";
+  document.getElementById("logout-btn").style.display = "none";
+}
+(function autoLogin() {
+  try {
+    const saved = localStorage.getItem("kota_driver");
+    const ok = localStorage.getItem("kota_driver_ok");
+    if (saved && ok === "1") {
+      document.getElementById("driver-name").value = saved;
+      enterApp(saved);
+    }
+  } catch (e) {}
+})();
+
+document.getElementById("login-btn").onclick = startDriver;
+["driver-name", "driver-pin"].forEach(function (id) {
+  document.getElementById(id).addEventListener("keydown", function (e) {
+    if (e.key === "Enter") startDriver();
+  });
+});
+document.getElementById("refresh-btn").onclick = function () { loadData(true); };
+
+document.querySelectorAll(".tabs button").forEach(function (b) {
+  b.onclick = function () {
+    document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
+    document.querySelectorAll(".tabs button").forEach(function (x) { x.classList.remove("active"); });
+    b.classList.add("active");
+    document.getElementById("panel-" + b.dataset.panel).classList.add("active");
+    if (b.dataset.panel === "done") renderDone();
+    if (b.dataset.panel === "ready") document.getElementById("new-banner").classList.remove("show");
+  };
+});
+
+function beep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = 988; o.type = "sine";
+    g.gain.setValueAtTime(0.3, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+    o.start(); o.stop(ctx.currentTime + 0.35);
+  } catch (e) {}
+  if (navigator.vibrate) navigator.vibrate([180, 60, 180]);
+}
+function startPolling() {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(function () { loadData(false); }, 3000);
+}
+function parseOrder(o) {
+  let payment = "cash", notes = String(o.notes || "");
+  let st = String(o.status || "new").toLowerCase();
+  if (/\[PENDING:1\]/i.test(notes) && (st === "new" || st === "pending")) st = "pending";
+  const pm = notes.match(/\[PAY:(cash|paid)\]/i);
+  if (pm) payment = pm[1].toLowerCase();
+  notes = notes.replace(/\[PENDING:1\]/gi, "").replace(/\[PAY:(cash|paid)\]/gi, "").replace(/\[CODE:[^\]]+\]/gi, "").replace(/\[FEE:\d+\]/gi, "").trim();
+  const sid = String(o.id);
+  if (localStatus[sid] && Date.now() - localStatus[sid].at < 120000) st = localStatus[sid].status;
+  return {
+    id: o.id,
+    name: o.name,
+    phone: o.phone,
+    address: o.address,
+    notes: notes,
+    items: o.items || "",
+    total: +o.total || 0,
+    status: st,
+    created: o.timestamp,
+    payment: payment
+  };
+}
+async function loadData(manual) {
+  const syncEl = document.getElementById("sync-label");
+  if (manual) syncEl.textContent = "Refreshing…";
+  try {
+    const res = await fetch(SHEETS + "?t=" + Date.now(), { cache: "no-store" });
+    const data = await res.json();
+    const list = Array.isArray(data.orders) ? data.orders : [];
+    orders = list.map(parseOrder);
+    // Ready = kitchen marked ready, not pending
+    const readyIds = new Set(orders.filter(function (o) { return o.status === "ready" && !myClaims[o.id]; }).map(function (o) { return o.id; }));
+    let hasNew = false;
+    readyIds.forEach(function (id) {
+      if (!lastReadyIds.has(id) && lastReadyIds.size > 0) hasNew = true;
+    });
+    if (hasNew) {
+      beep();
+      document.getElementById("new-banner").classList.add("show");
+      toast("New order ready for pickup!");
+    }
+    lastReadyIds = readyIds;
+    renderReady();
+    renderMine();
+    if (document.getElementById("panel-done").classList.contains("active")) renderDone();
+    const now = new Date();
+    syncEl.textContent = "Updated " + now.toLocaleTimeString("en-ZA", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  } catch (e) {
+    syncEl.textContent = "Offline — retrying";
+    if (manual) toast("Could not refresh");
+  }
+}
+function renderReady() {
+  const list = document.getElementById("ready-list");
+  const available = orders.filter(function (o) { return o.status === "ready" && !myClaims[o.id]; });
+  document.getElementById("ready-count").textContent = available.length;
+  if (!available.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">🛵</div>No orders waiting<br><span style="font-size:.85rem">You\'ll get a beep when kitchen marks one Ready</span></div>';
+    return;
+  }
+  list.innerHTML = available.map(function (o) {
+    const oid = String(o.id).replace(/"/g, "");
+    return '<div class="card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
+      '<div><h3>' + (o.name || "—") + '</h3><div class="meta">📞 ' + (o.phone || "—") + '</div></div>' +
+      '<span class="badge ready">Ready</span></div>' +
+      '<div class="address-box">📍 ' + (o.address || "—") + '</div>' +
+      (o.notes ? '<div class="meta" style="margin-bottom:6px">📝 ' + o.notes + '</div>' : '') +
+      '<div class="items-list">' + (o.items || "—") + '</div>' +
+      '<div class="total-row"><span>' + (o.payment === "paid" ? "Paid online" : "Cash to collect") + '</span><span>R' + o.total + '</span></div>' +
+      '<div class="actions"><button type="button" class="btn btn-primary" data-action="claim" data-id="' + oid + '">Take this delivery</button></div></div>';
+  }).join("");
+}
+function phoneClean(p) {
+  let d = String(p || "").replace(/\D/g, "");
+  if (d.startsWith("0")) d = "27" + d.slice(1);
+  else if (!d.startsWith("27") && d.length >= 9) d = "27" + d.slice(-9);
+  return d;
+}
+function renderMine() {
+  const list = document.getElementById("mine-list");
+  const mine = orders.filter(function (o) {
+    return (o.status === "ready" || o.status === "out") && myClaims[o.id];
+  });
+  document.getElementById("mine-count").textContent = mine.length;
+  if (!mine.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div>No active deliveries<br><span style="font-size:.85rem">Claim an order from the Ready tab</span></div>';
+    return;
+  }
+  list.innerHTML = mine.map(function (o) {
+    const oid = String(o.id).replace(/"/g, "");
+    const dig = phoneClean(o.phone);
+    const maps = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(o.address || "");
+    const wa = "https://wa.me/" + dig + "?text=" + encodeURIComponent("Hi " + (o.name || "") + ", your Kota Delivery App order is on the way!");
+    return '<div class="card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">' +
+      '<div><h3>' + (o.name || "—") + '</h3><div class="meta">📞 ' + (o.phone || "—") + '</div></div>' +
+      '<span class="badge ' + (o.status === "out" ? "out" : "mine") + '">' + (o.status === "out" ? "Out for delivery" : "Claimed") + '</span></div>' +
+      '<div class="address-box">📍 ' + (o.address || "—") + '</div>' +
+      (o.notes ? '<div class="meta" style="margin-bottom:6px">📝 ' + o.notes + '</div>' : '') +
+      '<div class="items-list">' + (o.items || "—") + '</div>' +
+      '<div class="total-row"><span>' + (o.payment === "paid" ? "Paid online" : "CASH TO COLLECT") + '</span><span>R' + o.total + '</span></div>' +
+      '<div class="actions">' +
+      '<div class="actions-row">' +
+      '<a class="btn btn-secondary" href="tel:' + dig + '">Call</a>' +
+      '<a class="btn btn-secondary" href="' + wa + '" target="_blank">WhatsApp</a>' +
+      '<a class="btn btn-secondary" href="' + maps + '" target="_blank">Navigate</a>' +
+      '</div>' +
+      (o.status !== "out" ? '<button type="button" class="btn btn-primary" data-action="out" data-id="' + oid + '">Picked up · Out for delivery</button>' : '') +
+      '<button type="button" class="btn btn-green" data-action="delivered" data-id="' + oid + '">Mark delivered</button>' +
+      '<button type="button" class="btn btn-secondary" data-action="release" data-id="' + oid + '">Release back to Ready</button>' +
+      '</div></div>';
+  }).join("");
+}
+function renderDone() {
+  const today = new Date().toDateString();
+  const done = orders.filter(function (o) {
+    if (o.status !== "delivered" && o.status !== "done") return false;
+    if (!myClaims[o.id]) return false;
+    const t = new Date(o.created);
+    return !isNaN(t) && t.toDateString() === today;
+  });
+  const cash = done.filter(function (o) { return o.payment !== "paid"; }).reduce(function (s, o) { return s + (+o.total || 0); }, 0);
+  document.getElementById("cash-total").textContent = "R" + cash;
+  const list = document.getElementById("done-list");
+  if (!done.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>No deliveries completed yet today</div>';
+    return;
+  }
+  list.innerHTML = done.map(function (o) {
+    return '<div class="card" style="opacity:.85"><div style="display:flex;justify-content:space-between"><div><h3>' + (o.name || "") + '</h3><div class="meta">' + (o.address || "") + '</div></div>' +
+      '<span class="badge" style="background:var(--surface2);color:var(--muted)">delivered</span></div>' +
+      '<div class="total-row"><span>' + (o.payment === "paid" ? "Paid" : "Cash") + '</span><span>R' + o.total + '</span></div></div>';
+  }).join("");
+}
+
+async function claimOrder(id) {
+  const o = orders.find(function (x) { return String(x.id) === String(id); });
+  if (!o) return;
+  if (!(await showConfirm("Take delivery", "Take this delivery for " + (o.name || "customer") + "?", "Take it"))) return;
+  myClaims[id] = Date.now();
+  localStorage.setItem("kota_claims_" + driverName, JSON.stringify(myClaims));
+  await setStatus(id, "out");
+  toast("Delivery claimed");
+  document.querySelector('.tabs button[data-panel="mine"]').click();
+}
+async function releaseOrder(id) {
+  if (!(await showConfirm("Release order", "Release this order back to Ready for other drivers?", "Release"))) return;
+  delete myClaims[id];
+  localStorage.setItem("kota_claims_" + driverName, JSON.stringify(myClaims));
+  await setStatus(id, "ready");
+  toast("Released back to Ready");
+  document.querySelector('.tabs button[data-panel="ready"]').click();
+}
+async function markDelivered(id) {
+  const o = orders.find(function (x) { return String(x.id) === String(id); });
+  const cashNote = o && o.payment !== "paid" ? (" Collect R" + o.total + " cash.") : "";
+  if (!(await showConfirm("Mark delivered", "Mark this order as delivered?" + cashNote, "Delivered"))) return;
+  await setStatus(id, "done");
+  toast("Marked delivered");
+}
+async function setStatus(id, status) {
+  localStatus[String(id)] = { status: status, at: Date.now() };
+  const o = orders.find(function (x) { return String(x.id) === String(id); });
+  if (o) o.status = status;
+  renderReady();
+  renderMine();
+  try {
+    await fetch(SHEETS, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ action: "updateStatus", orderId: id, status: status })
+    });
+  } catch (e) {}
+}
+
+// Event delegation for action buttons
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest("[data-action][data-id]");
+  if (!btn) return;
+  const id = btn.getAttribute("data-id");
+  const action = btn.getAttribute("data-action");
+  if (action === "claim") claimOrder(id);
+  else if (action === "out") setStatus(id, "out");
+  else if (action === "delivered") markDelivered(id);
+  else if (action === "release") releaseOrder(id);
+});
+</script>
+</body>
+</html>

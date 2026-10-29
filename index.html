@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+  var KEY='kota_theme';
+  function current(){ return document.documentElement.getAttribute('data-theme') || 'light'; }
+  function setIcon(){
+    var theme=current();
+    document.querySelectorAll('[data-theme-icon]').forEach(function(el){
+      el.textContent = theme==='dark' ? '☀️' : '🌙';
+    });
+  }
+  function apply(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    try{ localStorage.setItem(KEY, theme); }catch(e){}
+    setIcon();
+  }
+  var saved=null;
+  try{ saved=localStorage.getItem(KEY); }catch(e){}
+  var prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  apply(saved || (prefersDark ? 'dark' : 'light'));
+  window.toggleTheme=function(){
+    apply(current()==='dark' ? 'light' : 'dark');
+  };
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', setIcon);
+  } else { setIcon(); }
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kota Delivery App · Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* KOTA_THEME_UNIFIED */
+
+:root, [data-theme="light"]{
+  --bg:#f6f7f9; --card:#ffffff; --surface:#ffffff; --surface2:#f0f2f5; --border:#e8eaed;
+  --text:#1a1a1a; --muted:#6b7280; --brand:#ff5c1a; --orange:#ff5c1a; --green:#06c167;
+  --green-dim:rgba(6,193,103,.12); --blue:#3b82f6; --blue-dim:rgba(59,130,246,.12);
+  --yellow:#eab308; --yellow-dim:rgba(234,179,8,.15); --red:#ef4444;
+  --shadow:0 2px 12px rgba(0,0,0,.06); --header-bg:rgba(255,255,255,.96); --input-bg:#ffffff;
+}
+[data-theme="dark"]{
+  --bg:#0b0c0f; --card:#14161a; --surface:#14161a; --surface2:#1c1f26; --border:#2a2e38;
+  --text:#f1f3f5; --muted:#8b93a7; --brand:#ff5c1a; --orange:#ff5c1a; --green:#22c55e;
+  --green-dim:rgba(34,197,94,.15); --blue:#3b82f6; --blue-dim:rgba(59,130,246,.15);
+  --yellow:#eab308; --yellow-dim:rgba(234,179,8,.15); --red:#ef4444;
+  --shadow:0 2px 16px rgba(0,0,0,.4); --header-bg:rgba(11,12,15,.96); --input-bg:#1c1f26;
+}
+html, body { background: var(--bg) !important; color: var(--text) !important; }
+.topbar, header { background: var(--header-bg) !important; border-color: var(--border) !important; color: var(--text); }
+.card, .menu-card, .modal-sheet, .stat-card, .cash-box, .receipt { background: var(--card) !important; border-color: var(--border) !important; color: var(--text); }
+input, textarea, select { background: var(--input-bg) !important; color: var(--text) !important; border-color: var(--border) !important; }
+.cart-bar { background: var(--card) !important; border-color: var(--border) !important; color: var(--text); }
+.tabs { border-color: var(--border) !important; }
+.tabs button { color: var(--muted); }
+.tabs button.active { color: var(--brand); }
+.theme-btn{
+  width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text);cursor:pointer;font-size:1.1rem;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.theme-btn:active{transform:scale(.96)}
+.header-actions{display:flex;align-items:center;gap:10px}
+.meta, .hint, .sub, .sync-label { color: var(--muted); }
+
+
+
+/* Theme tokens */
+:root, [data-theme="light"]{
+  --bg:#f6f7f9; --card:#ffffff; --surface2:#f0f2f5; --border:#e8eaed;
+  --text:#1a1a1a; --muted:#6b7280; --brand:#ff5c1a; --green:#06c167;
+  --shadow:0 2px 12px rgba(0,0,0,.06); --header-bg:rgba(255,255,255,.94);
+  --input-bg:#fff; --banner-new-bg:#fef9c3; --banner-new:#a16207;
+  --banner-cook-bg:#dbeafe; --banner-cook:#1d4ed8; --banner-ready-bg:#dcfce7; --banner-ready:#15803d;
+  --banner-out-bg:#ffedd5; --banner-out:#c2410c; --banner-done-bg:#f3f4f6; --banner-done:#6b7280;
+}
+[data-theme="dark"]{
+  --bg:#0b0c0f; --card:#14161a; --surface2:#1c1f26; --border:#2a2e38;
+  --text:#f1f3f5; --muted:#8b93a7; --brand:#ff5c1a; --green:#22c55e;
+  --shadow:0 2px 16px rgba(0,0,0,.35); --header-bg:rgba(11,12,15,.94);
+  --input-bg:#1c1f26; --banner-new-bg:rgba(234,179,8,.15); --banner-new:#eab308;
+  --banner-cook-bg:rgba(59,130,246,.15); --banner-cook:#60a5fa; --banner-ready-bg:rgba(34,197,94,.15); --banner-ready:#22c55e;
+  --banner-out-bg:rgba(249,115,22,.15); --banner-out:#fb923c; --banner-done-bg:rgba(139,147,167,.15); --banner-done:#9ca3af;
+}
+
+html, body { background: var(--bg) !important; color: var(--text) !important; }
+.topbar, header { background: var(--header-bg) !important; border-color: var(--border) !important; }
+.card, .menu-card, .modal-sheet, .stat-card, .cash-box { background: var(--card) !important; border-color: var(--border) !important; color: var(--text); }
+.hero, .section-title, .menu-body h3 { color: var(--text); }
+input, textarea, select { background: var(--input-bg) !important; color: var(--text) !important; border-color: var(--border) !important; }
+.cart-bar { background: var(--card) !important; border-color: var(--border) !important; }
+.tabs { background: var(--bg); border-color: var(--border); }
+.tabs button { color: var(--muted); }
+.tabs button.active { color: var(--brand); }
+
+.theme-btn{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text);cursor:pointer;font-size:1rem;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+
+:root{
+  --bg:#f6f7f9; --card:#fff; --text:#1a1a1a; --muted:#6b7280; --line:#e8eaed;
+  --brand:#ff5c1a; --brand-dark:#e04e12; --green:#06c167; --shadow:0 2px 12px rgba(0,0,0,.06);
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:90px}
+/* Header */
+.topbar{position:sticky;top:0;z-index:40;background:var(--header-bg);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.logo-ph{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--brand),#ff8a4c);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.logo-ph img{width:100%;height:100%;object-fit:cover}
+.logo-ph span{color:#fff;font-weight:800;font-size:1.1rem}
+.topbar h1{font-size:1.05rem;font-weight:700}
+.topbar p{font-size:.75rem;color:var(--muted)}
+.track-link{margin-left:auto;font-size:.8rem;font-weight:600;color:var(--brand);text-decoration:none}
+/* Hero */
+.hero{background:var(--card);padding:16px;border-bottom:1px solid var(--border)}
+.hero-img{width:100%;aspect-ratio:16/9;border-radius:var(--radius);background:linear-gradient(145deg,#2a2a2a,#1a1a1a);display:flex;align-items:center;justify-content:center;color:#888;font-size:.85rem;overflow:hidden;position:relative}
+.hero-img img{width:100%;height:100%;object-fit:cover}
+.hero-img .ph{text-align:center}
+.hero h2{font-size:1.25rem;font-weight:800;margin-top:14px;letter-spacing:-.02em}
+.hero .sub{color:var(--muted);font-size:.88rem;margin-top:4px}
+/* Section */
+.section{padding:18px 16px 8px}
+.section-title{font-size:1.05rem;font-weight:700;margin-bottom:12px;letter-spacing:-.01em}
+/* Menu cards - Uber style */
+.menu-grid{display:flex;flex-direction:column;gap:12px;padding:0 16px 24px}
+.menu-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;overflow:hidden;border:1px solid var(--border)}
+.menu-img{width:110px;min-height:110px;background:#eee;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:.7rem;text-align:center;padding:8px;position:relative}
+.menu-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.menu-body{flex:1;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between}
+.menu-body h3{font-size:.95rem;font-weight:700}
+.menu-body .price{color:var(--brand);font-weight:700;font-size:1rem;margin-top:4px}
+.qty-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.qty-btn{width:32px;height:32px;border-radius:50%;border:none;background:var(--brand);color:#fff;font-size:1.15rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.qty-btn:disabled{background:#ddd;color:#999}
+.qty-num{font-weight:700;min-width:18px;text-align:center}
+/* Cart bar */
+.cart-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,.06);z-index:50}
+.cart-bar .info{font-size:.9rem}
+.cart-bar .info strong{font-size:1.05rem}
+.cart-bar button{background:var(--brand);color:#fff;border:none;padding:12px 20px;border-radius:28px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit}
+.cart-bar button:disabled{background:#ccc}
+/* Modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:flex-end;justify-content:center}
+.modal.open{display:flex}
+.modal-sheet{background:var(--card);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:20px 18px 32px;max-height:92vh;overflow-y:auto;animation:up .28s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-sheet h2{font-size:1.15rem;font-weight:800;margin-bottom:14px}
+.close-x{position:absolute;right:16px;top:16px;border:none;background:var(--surface2);width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:4px}
+.fg input,.fg textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);background:var(--input-bg);border-radius:12px;font-family:inherit;font-size:.95rem}
+.fg input:focus,.fg textarea:focus{outline:none;border-color:var(--brand)}
+.summary{background:var(--bg);border-radius:12px;padding:12px;margin-bottom:14px}
+.summary .row{display:flex;justify-content:space-between;padding:4px 0;font-size:.9rem}
+.summary .grand{font-weight:800;font-size:1.05rem;margin-top:6px;color:var(--brand)}
+.pay-opts{display:flex;gap:8px;margin-bottom:14px}
+.pay-opts label{flex:1;padding:12px;border:2px solid var(--border);border-radius:12px;text-align:center;font-size:.85rem;font-weight:600;cursor:pointer}
+.pay-opts label.on{border-color:var(--brand);background:rgba(255,92,26,.12)}
+.pay-opts input{display:none}
+.btn-main{width:100%;padding:15px;border:none;border-radius:14px;background:var(--brand);color:#fff;font-weight:700;font-size:1rem;font-family:inherit;cursor:pointer}
+.btn-main:disabled{opacity:.6}
+.note{font-size:.78rem;color:var(--muted);text-align:center;margin-top:10px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <!-- LOGO: replace src with your logo file, or leave placeholder -->
+  <div class="logo-ph" id="logo-box">
+    <img src="" alt="Kota Delivery App logo" id="logo-img" style="display:none" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span>K</span>
+  </div>
+  <div>
+    <h1>Kota Delivery App</h1>
+    <p>Fresh · Hot · Delivered</p>
+  </div>
+  <button type="button" class="theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode"><span data-theme-icon>🌙</span></button>
+  <a class="track-link" href="track.html">Track order</a>
+</header>
+
+<section class="hero">
+  <!-- HERO IMAGE: set src to your kota photo -->
+  <div class="hero-img">
+    <img src="" alt="Kota" id="hero-img" style="display:none" onerror="this.style.display='none'">
+    <div class="ph" id="hero-ph">📷 Add hero image<br><small>kota.jpg</small></div>
+  </div>
+  <h2>Order your Kota</h2>
+  <p class="sub">Tap + to add · Pay on delivery or online</p>
+</section>
+
+<div class="section"><div class="section-title">Menu</div></div>
+<div class="menu-grid" id="menu-list"></div>
+
+<div class="cart-bar">
+  <div class="info"><div style="color:var(--muted);font-size:.78rem" id="cart-count">0 items</div><strong id="cart-total">R0</strong></div>
+  <button id="open-cart" disabled>View cart</button>
+</div>
+
+<div class="modal" id="cart-modal">
+  <div class="modal-sheet" style="position:relative">
+    <button class="close-x" id="close-modal">×</button>
+    <h2>Your order</h2>
+    <div class="summary" id="cart-summary"></div>
+    <form id="order-form" onsubmit="return false;">
+    <div class="fg"><label>Name *</label><input id="cust-name" name="name" placeholder="Thabo Mokoena" required autocomplete="name"></div>
+    <div class="fg"><label>Phone *</label><input id="cust-phone" name="phone" type="tel" placeholder="082 123 4567" required autocomplete="tel"></div>
+    <div class="fg"><label>Address *</label><input id="cust-address" name="address" placeholder="Street, suburb" required autocomplete="street-address"></div>
+    <div class="fg"><label>Notes</label><textarea id="cust-notes" name="notes" rows="2" placeholder="Extra sauce, gate code…"></textarea></div>
+    <div class="fg"><label>Payment</label>
+      <div class="pay-opts">
+        <label class="on" id="lbl-cash"><input type="radio" name="pay" value="cash" checked> Cash on delivery</label>
+        <label id="lbl-online"><input type="radio" name="pay" value="online"> Pay online</label>
+      </div>
+    </div>
+    <label style="display:flex;gap:8px;align-items:flex-start;font-size:.82rem;margin-bottom:12px;cursor:pointer">
+      <input type="checkbox" id="confirm-wa-check" style="margin-top:3px;accent-color:var(--brand)">
+      <span>I will send the WhatsApp message. I understand my order is only accepted after kitchen confirms it.</span>
+    </label>
+    <button type="submit" class="btn-main" id="send-order">Submit order</button>
+    <p class="note">Next you will confirm on WhatsApp so kitchen can accept your order.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+/*__KOTA_PUBLISH__*/
+window.KOTA_PUBLISHED_MENU = null;
+window.KOTA_PUBLISHED_BRANDING = null;
+/*__KOTA_PUBLISH_END__*/
+// ===== CONFIG =====
+const WA_NUMBER = "27631694359";
+const SHEETS = "https://script.google.com/macros/s/AKfycbxg71IdS6OulHZdeYds79butV1ku-E1I2YSBkkb3R8vU3eim03nYq3QrK1TNdAtqiaWAQ/exec";
+// PayFast (enable later)
+const PAYFAST_ENABLED = false;
+const PAYFAST_MERCHANT_ID = "";
+const PAYFAST_MERCHANT_KEY = "";
+const PAYFAST_SANDBOX = true;
+
+// Menu — set image to a filename or URL when you have photos
+const DEFAULT_MENU = [
+  { id:"k1", name:"Kota: Chips, Atchar, French", price:15, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"k2", name:"Kota: Chips, Atchar, French, Egg or Cheese", price:18, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"k3", name:"Kota: Chips, Atchar, French, Cheese, Egg", price:22, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"k4", name:"Kota: Chips, Atchar, French, Vienna, Cheese, Egg", price:28, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"k5", name:"Kota: Chips, Atchar, French, Vienna, Cheese, Egg, Fish", price:42, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"k6", name:"Kota: Chips, Atchar, French, Cheese, Egg, Vienna, Russian, Fish", price:50, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"k7", name:"Kota: Chips, Atchar, French, Cheese, Vienna, Russian, Burger, Fish", price:65, image:"menu-images/kota.jpg", cat:"Kota" },
+  { id:"a_french", name:"Add: French", price:5, image:"menu-images/kota.jpg", cat:"Add-ons" },
+  { id:"a_patty", name:"Add: Burger Patty", price:15, image:"menu-images/kota2.jpg", cat:"Add-ons" },
+  { id:"a_pork", name:"Add: Pork Burger", price:25, image:"menu-images/kota2.jpg", cat:"Add-ons" },
+  { id:"a_fish", name:"Add: Fish", price:15, image:"menu-images/kota.jpg", cat:"Add-ons" },
+  { id:"a_egg", name:"Add: Egg", price:7, image:"menu-images/kota.jpg", cat:"Add-ons" },
+  { id:"a_cheese", name:"Add: Cheese", price:7, image:"menu-images/kota.jpg", cat:"Add-ons" },
+  { id:"a_vienna", name:"Add: Vienna", price:13, image:"menu-images/wors.jpg", cat:"Add-ons" },
+  { id:"a_rus_big", name:"Add: Russian Big", price:20, image:"menu-images/wors.jpg", cat:"Add-ons" },
+  { id:"a_rus_sm", name:"Add: Russian Small", price:15, image:"menu-images/wors.jpg", cat:"Add-ons" },
+  { id:"alt_wors", name:"Wors Rolls with Chips", price:40, image:"menu-images/wors.jpg", cat:"Alternative" },
+  { id:"alt_beef", name:"Beef Burger + Chips", price:50, image:"menu-images/kota2.jpg", cat:"Alternative" },
+  { id:"alt_mash", name:"Kota Mash an Maotwana", price:23, image:"menu-images/kota2.jpg", cat:"Alternative" },
+  { id:"chips_s", name:"Chips Small", price:20, image:"menu-images/chips.jpg", cat:"Chips" },
+  { id:"chips_m", name:"Chips Medium", price:35, image:"menu-images/chips.jpg", cat:"Chips" },
+  { id:"chips_l", name:"Chips Larger", price:50, image:"menu-images/chips.jpg", cat:"Chips" }
+];
+
+// Prefer menu published from kitchen app
+const MENU = (window.KOTA_PUBLISHED_MENU && window.KOTA_PUBLISHED_MENU.length)
+  ? window.KOTA_PUBLISHED_MENU
+  : DEFAULT_MENU;
+
+const BRANDING = window.KOTA_PUBLISHED_BRANDING || { logo: "", hero: "hero.jpg" };
+if (!BRANDING.hero) BRANDING.hero = "hero.jpg";
+
+function applyBranding() {
+  const brand = BRANDING.brandColor || "#ff5c1a";
+  const green = BRANDING.greenColor || "#06c167";
+  document.documentElement.style.setProperty("--brand", brand);
+  document.documentElement.style.setProperty("--green", green);
+
+  if (BRANDING.logo) {
+    const img = document.getElementById("logo-img");
+    const box = document.getElementById("logo-box");
+    if (img) {
+      img.src = BRANDING.logo;
+      img.style.display = "block";
+      const span = box ? box.querySelector("span") : null;
+      if (span) span.style.display = "none";
+    }
+    // logo placeholder gradient uses brand
+    if (box) box.style.background = brand;
+  }
+  if (BRANDING.hero) {
+    const img = document.getElementById("hero-img");
+    const ph = document.getElementById("hero-ph");
+    if (img) {
+      img.src = BRANDING.hero;
+      img.style.display = "block";
+    }
+    if (ph) ph.style.display = "none";
+  }
+}
+
+let cart = {};
+
+function renderMenu() {
+  const cats = [];
+  MENU.forEach(item => {
+    const c = item.cat || "Menu";
+    if (!cats.includes(c)) cats.push(c);
+  });
+  let html = "";
+  cats.forEach(cat => {
+    html += `<div class="section-title" style="margin:8px 0 4px">${cat}</div>`;
+    html += MENU.filter(i => (i.cat||"Menu")===cat).map(item => {
+      const qty = cart[item.id] || 0;
+      const img = item.image
+        ? `<img src="${item.image}" alt="${item.name}" onerror="this.remove()">`
+        : `<span>📷<br>Photo</span>`;
+      return `<div class="menu-card">
+      <div class="menu-img">${img}</div>
+      <div class="menu-body">
+        <div><h3>${item.name}</h3><div class="price">R${item.price}</div></div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="changeQty('${item.id}',-1)" ${qty?"":"disabled"}>−</button>
+          <span class="qty-num">${qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+        </div>
+      </div>
+    </div>`;
+    }).join("");
+  });
+  document.getElementById("menu-list").innerHTML = html;
+  updateBar();
+}
+
+function changeQty(id, d) {
+  cart[id] = (cart[id] || 0) + d;
+  if (cart[id] <= 0) delete cart[id];
+  renderMenu();
+}
+
+function updateBar() {
+  let total = 0, count = 0;
+  for (const id in cart) {
+    const item = MENU.find(m => m.id === id);
+    if (item) { total += item.price * cart[id]; count += cart[id]; }
+  }
+  document.getElementById("cart-total").textContent = "R" + total;
+  document.getElementById("cart-count").textContent = count + (count === 1 ? " item" : " items");
+  const btn = document.getElementById("open-cart");
+  btn.disabled = count === 0;
+  btn.textContent = count ? `View cart · R${total}` : "View cart";
+}
+
+document.getElementById("open-cart").onclick = () => {
+  let total = 0, html = "";
+  for (const id in cart) {
+    const item = MENU.find(m => m.id === id);
+    if (!item) continue;
+    const sub = item.price * cart[id];
+    total += sub;
+    html += `<div class="row"><span>${cart[id]}× ${item.name}</span><span>R${sub}</span></div>`;
+  }
+  html += `<div class="row grand"><span>Total</span><span>R${total}</span></div>`;
+  document.getElementById("cart-summary").innerHTML = html;
+  document.getElementById("cart-modal").classList.add("open");
+};
+document.getElementById("close-modal").onclick = () => document.getElementById("cart-modal").classList.remove("open");
+
+document.querySelectorAll('input[name="pay"]').forEach(r => {
+  r.onchange = () => {
+    document.getElementById("lbl-cash").classList.toggle("on", r.value === "cash" && r.checked);
+    document.getElementById("lbl-online").classList.toggle("on", r.value === "online" && r.checked);
+  };
+});
+// fix pay label clicks
+document.getElementById("lbl-cash").onclick = () => { document.querySelector('input[value="cash"]').checked = true; document.getElementById("lbl-cash").classList.add("on"); document.getElementById("lbl-online").classList.remove("on"); };
+document.getElementById("lbl-online").onclick = () => { document.querySelector('input[value="online"]').checked = true; document.getElementById("lbl-online").classList.add("on"); document.getElementById("lbl-cash").classList.remove("on"); };
+
+// Order submit timer settings (hoisted for submit handler)
+var CONFIRM_SECONDS = 10 * 60;
+var SUBMIT_COOLDOWN_MS = 30 * 1000;
+var __confirmTimerId = null;
+var __lastSubmitAt = 0;
+
+const submitOrder = async () => {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const notes = document.getElementById("cust-notes").value.trim();
+  const pay = document.querySelector('input[name="pay"]:checked')?.value || "cash";
+  // Validate to reduce false orders
+  if (!name || name.length < 2) { alert("Please enter your full name."); return; }
+  if (!phone || !address) { alert("Please fill phone and address."); return; }
+  const phoneDigits = phone.replace(/\D/g, "");
+  if (phoneDigits.length < 10) { alert("Please enter a valid SA phone number (at least 10 digits)."); return; }
+  if (address.length < 5) { alert("Please enter a complete delivery address."); return; }
+  if (!Object.keys(cart).length) { alert("Cart is empty."); return; }
+  const waCheck=document.getElementById("confirm-wa-check");
+  if (waCheck && !waCheck.checked) { alert("Please tick the box confirming you will send the WhatsApp message."); return; }
+  // Spam protection: short cooldown between submissions
+  if (__lastSubmitAt && Date.now() - __lastSubmitAt < SUBMIT_COOLDOWN_MS) {
+    const wait = Math.ceil((SUBMIT_COOLDOWN_MS - (Date.now() - __lastSubmitAt)) / 1000);
+    alert("Please wait " + wait + "s before submitting another order.");
+    return;
+  }
+
+  if (!confirm("You must send the WhatsApp message for this order to be accepted.\n\nContinue?")) return;
+
+  let total = 0, itemsText = "", itemsSheet = [];
+  for (const id in cart) {
+    const item = MENU.find(m => m.id === id);
+    if (!item) continue;
+    const sub = item.price * cart[id];
+    total += sub;
+    itemsText += `• ${cart[id]}× ${item.name} — R${sub}\n`;
+    itemsSheet.push(`${cart[id]}× ${item.name}`);
+  }
+
+  // Unique confirmation code — kitchen matches this with WhatsApp
+  const confirmCode = "K" + String(Math.floor(1000 + Math.random() * 9000));
+  const btn = document.getElementById("send-order");
+  btn.disabled = true; btn.textContent = "Sending…";
+  const packedNotes = `[PENDING:1][PAY:${pay === "online" ? "paid" : "cash"}][CODE:${confirmCode}] ${notes}`.trim();
+
+  // Saved as pending until kitchen confirms WhatsApp received
+  try {
+    await fetch(SHEETS, {
+      method: "POST", mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({
+        action: "add",
+        name, phone, address,
+        notes: packedNotes,
+        items: itemsSheet.join(", "),
+        total,
+        status: "pending"
+      })
+    });
+  } catch (e) {}
+
+  if (pay === "online") {
+    if (PAYFAST_ENABLED && PAYFAST_MERCHANT_ID) {
+      alert("Redirecting to payment…");
+    } else {
+      alert("Online payment is not set up yet. Please choose Cash on delivery.");
+      btn.disabled = false; btn.textContent = "Submit order";
+      return;
+    }
+  }
+
+  const msg = `*Kota Delivery Order*\n\n` +
+    `*Confirm code:* ${confirmCode}\n` +
+    `*Name:* ${name}\n` +
+    `*Phone:* ${phone}\n` +
+    `*Address:* ${address}\n` +
+    (notes ? `*Notes:* ${notes}\n` : "") +
+    `*Payment:* ${pay === "online" ? "Online" : "Cash on delivery"}\n\n` +
+    `*Items:*\n${itemsText}\n` +
+    `*TOTAL: R${total}*\n\n` +
+    `_Please send this message to confirm your order._`;
+
+  const expiresAt = Date.now() + CONFIRM_SECONDS * 1000;
+  window.__pendingWaOrder = {
+    msg,
+    code: confirmCode,
+    total,
+    expiresAt,
+    itemsHtml: itemsSheet.map(x => `<div class="row"><span>${x}</span></div>`).join("") +
+      `<div class="row grand"><span>Total</span><span>R${total}</span></div>`
+  };
+
+  document.getElementById("wa-confirm-code").textContent = confirmCode;
+  document.getElementById("wa-confirm-summary").innerHTML = window.__pendingWaOrder.itemsHtml;
+  const waBtn = document.getElementById("wa-confirm-btn");
+  if (waBtn) { waBtn.disabled = false; waBtn.textContent = "Confirm on WhatsApp"; }
+  document.getElementById("cart-modal").classList.remove("open");
+  document.getElementById("wa-confirm-modal").classList.add("open");
+  startConfirmTimer(CONFIRM_SECONDS);
+  __lastSubmitAt = Date.now();
+
+  cart = {};
+  renderMenu();
+  btn.disabled = false;
+  btn.textContent = "Submit order";
+};
+
+document.getElementById("send-order").onclick = function(e){ e.preventDefault(); submitOrder(); };
+const orderForm = document.getElementById("order-form");
+if (orderForm) {
+  orderForm.addEventListener("submit", function(e){ e.preventDefault(); submitOrder(); });
+}
+
+
+function formatTimer(sec){
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return m + ":" + String(s).padStart(2, "0");
+}
+
+function stopConfirmTimer(){
+  if (__confirmTimerId) { clearInterval(__confirmTimerId); __confirmTimerId = null; }
+}
+
+function startConfirmTimer(seconds){
+  stopConfirmTimer();
+  const el = document.getElementById("wa-confirm-timer");
+  let left = seconds;
+  const tick = () => {
+    if (!el) return;
+    if (left <= 0) {
+      stopConfirmTimer();
+      el.textContent = "Time expired — place a new order";
+      el.style.color = "#ef4444";
+      window.__pendingWaOrder = null;
+      const btn = document.getElementById("wa-confirm-btn");
+      if (btn) { btn.disabled = true; btn.textContent = "Time expired"; }
+      return;
+    }
+    el.textContent = "Time to send WhatsApp: " + formatTimer(left);
+    el.style.color = left <= 60 ? "#ef4444" : "var(--brand)";
+    left -= 1;
+  };
+  tick();
+  __confirmTimerId = setInterval(tick, 1000);
+}
+
+function openWaConfirmMessage(){
+  const pending = window.__pendingWaOrder;
+  if (!pending || !pending.msg) { alert("No order to confirm or timer expired. Please place a new order."); return; }
+  if (pending.expiresAt && Date.now() > pending.expiresAt) {
+    alert("Time expired. Please place a new order.");
+    window.__pendingWaOrder = null;
+    return;
+  }
+  window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(pending.msg), "_blank");
+  alert("WhatsApp opened with your order.\n\nTap Send in WhatsApp to confirm.\nYour code: " + pending.code);
+}
+function closeWaConfirm(){
+  const m = document.getElementById("wa-confirm-modal");
+  if (m) m.classList.remove("open");
+  // keep timer running in background until expiry so they can reopen if needed
+}
+applyBranding();
+renderMenu();
+</script>
+
+<div class="modal" id="wa-confirm-modal">
+  <div class="modal-sheet" style="position:relative">
+    <h2>Confirm your order</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:12px">Tap the green button to open WhatsApp with your order message already filled in. Then press <strong>Send</strong> in WhatsApp.</p>
+    <div class="summary" id="wa-confirm-summary"></div>
+    <div style="text-align:center;margin:14px 0;padding:12px;background:var(--surface2);border-radius:12px">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:600">YOUR CONFIRM CODE</div>
+      <div id="wa-confirm-code" style="font-size:1.8rem;font-weight:800;color:var(--brand);letter-spacing:.08em">—</div>
+      <div id="wa-confirm-timer" style="margin-top:10px;font-size:.9rem;font-weight:700;color:var(--muted)">Time to send: —</div>
+    </div>
+    <button type="button" class="btn-main" id="wa-confirm-btn" style="background:#25D366" onclick="openWaConfirmMessage()">Confirm on WhatsApp</button>
+    <button type="button" class="btn-main" id="wa-confirm-close" style="background:var(--surface2);color:var(--text);margin-top:8px;border:1px solid var(--border)" onclick="closeWaConfirm()">Close</button>
+    <p class="note">Kitchen only accepts the order after you send the WhatsApp message.</p>
+  </div>
+</div>
+
+</body>
+</html>
