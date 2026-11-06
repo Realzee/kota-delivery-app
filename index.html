@@ -205,15 +205,15 @@ const DEFAULT_MENU = [
   { id:"a_fish", name:"Fish", price:15, image:"menu-images/fish-add.jpg", cat:"Add-ons", detail:"" },
   { id:"a_egg", name:"Egg", price:7, image:"menu-images/egg.jpg", cat:"Add-ons", detail:"" },
   { id:"a_cheese", name:"Cheese", price:7, image:"menu-images/cheese.jpg", cat:"Add-ons", detail:"" },
-  { id:"a_vienna", name:"Vienna", price:13, image:"menu-images/vienna-add.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_vienna", name:"Vienna", price:13, image:"menu-images/vienna.jpg", cat:"Add-ons", detail:"" },
   { id:"a_rus_big", name:"Russian Big", price:20, image:"menu-images/russian-big.jpg", cat:"Add-ons", detail:"" },
   { id:"a_rus_sm", name:"Russian Small", price:15, image:"menu-images/russian-small.jpg", cat:"Add-ons", detail:"" },
   { id:"alt_wors", name:"Wors Rolls + Chips", price:40, image:"menu-images/wors.jpg", cat:"Meals", detail:"Wors roll with chips" },
   { id:"alt_beef", name:"Beef Burger + Chips", price:50, image:"menu-images/beef.jpg", cat:"Meals", detail:"" },
   { id:"alt_mash", name:"Kota Mash an Maotwana", price:23, image:"menu-images/mash.jpg", cat:"Meals", detail:"" },
   { id:"chips_s", name:"Chips Small", price:20, image:"menu-images/chips-s.jpg", cat:"Chips", detail:"" },
-  { id:"chips_m", name:"Chips Medium", price:35, image:"menu-images/chips-m.jpg", cat:"Chips", detail:"" },
-  { id:"chips_l", name:"Chips Larger", price:50, image:"menu-images/chips-l.jpg", cat:"Chips", detail:"" }
+  { id:"chips_m", name:"Chips Medium", price:35, image:"menu-images/chips-s.jpg", cat:"Chips", detail:"" },
+  { id:"chips_l", name:"Chips Larger", price:50, image:"menu-images/chips-s.jpg", cat:"Chips", detail:"" }
 ];
 
 const MENU = (window.KOTA_PUBLISHED_MENU && window.KOTA_PUBLISHED_MENU.length)
@@ -243,7 +243,7 @@ function resolveAsset(src){
 }
 function safeImgTag(src, alt, cls){
   const primary = resolveAsset(src);
-  const fallbacks = [resolveAsset("kota.jpg"), resolveAsset("hero.jpg")].filter(Boolean);
+  const fallbacks = [resolveAsset("menu-images/basic.jpg"), resolveAsset("menu-images/hero.jpg"), resolveAsset("kota.jpg"), resolveAsset("hero.jpg")].filter(Boolean);
   const all = [primary].concat(fallbacks).filter((v,i,a)=>v && a.indexOf(v)===i);
   const chain = all.map(u => u.replace(/'/g, "%27"));
   // onerror walks fallback list without throwing console loops
@@ -317,7 +317,7 @@ function renderMenu() {
     html += `<div class="section"><div class="section-title">${cat}</div></div><div class="grid">`;
     MENU.filter(i => (i.cat || "Menu") === cat).forEach(item => {
       const qty = cart[item.id] || 0;
-      const src = item.image || "kota.jpg";
+      const src = item.image || "menu-images/basic.jpg";
       const img = safeImgTag(src, item.name, "") + `<span class="thumb-ph" style="display:none">🍽</span>`;
       const detail = item.detail
         ? `<button type="button" class="more" id="more-${item.id}" onclick="toggleDetail('${item.id}')">Details</button>
