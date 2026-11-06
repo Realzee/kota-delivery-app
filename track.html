@@ -17,65 +17,80 @@
   document.addEventListener('DOMContentLoaded', setIcon);
 })();
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-:root,[data-theme="light"]{--bg:#f6f7f9;--card:#fff;--surface2:#f0f2f5;--border:#e8eaed;--text:#1a1a1a;--muted:#6b7280;--brand:#ff5c1a;--green:#06c167;--header-bg:rgba(255,255,255,.96);--input-bg:#fff;--shadow:0 4px 20px rgba(0,0,0,.06)}
-[data-theme="dark"]{--bg:#0b0c0f;--card:#14161a;--surface2:#1c1f26;--border:#2a2e38;--text:#f1f3f5;--muted:#8b93a7;--brand:#ff5c1a;--green:#22c55e;--header-bg:rgba(11,12,15,.96);--input-bg:#1c1f26;--shadow:0 4px 20px rgba(0,0,0,.35)}
+
+:root,[data-theme="light"]{
+  --bg:#f2f4f7;--card:#ffffff;--surface2:#e9edf2;--text:#0f1419;--muted:#667085;--line:#e4e7ec;--border:#e4e7ec;
+  --brand:#ff4d00;--brand-soft:rgba(255,77,0,.10);--green:#12b76a;--header-bg:rgba(255,255,255,.92);--input-bg:#fff;
+  --shadow:0 4px 24px rgba(16,24,40,.06);--radius:16px;
+}
+[data-theme="dark"]{
+  --bg:#0b0d12;--card:#141821;--surface2:#1b2130;--text:#f5f7fa;--muted:#98a2b3;--line:#2a3344;--border:#2a3344;
+  --brand:#ff5c1a;--brand-soft:rgba(255,92,26,.16);--green:#32d583;--header-bg:rgba(11,13,18,.92);--input-bg:#1b2130;
+  --shadow:0 8px 28px rgba(0,0,0,.45);--radius:16px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-.topbar{position:sticky;top:0;z-index:20;background:var(--header-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px}
-.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--brand),#ff8a4c);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
-.topbar h1{font-size:1rem;font-weight:700;flex:1}
-.theme-btn{width:38px;height:38px;border-radius:11px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-size:1rem;color:var(--text)}
-.topbar a{font-size:.8rem;font-weight:600;color:var(--brand);text-decoration:none}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.4;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+.topbar{position:sticky;top:0;z-index:40;background:var(--header-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--brand),#ff8a4c);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0}
+.topbar h1{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;flex:1}
+.icon-btn{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:1rem;color:var(--text)}
+.topbar a{font-size:.8rem;font-weight:700;color:var(--brand);text-decoration:none}
 .wrap{max-width:480px;margin:0 auto;padding:16px 16px 48px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
-.card h2{font-size:.95rem;font-weight:700;margin-bottom:12px}
-input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:14px;background:var(--input-bg);color:var(--text);font-family:inherit;font-size:1rem;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h2{font-size:.95rem;font-weight:800;margin-bottom:12px;letter-spacing:-.01em}
+input{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--input-bg);color:var(--text);font-family:inherit;font-size:1rem;margin-bottom:10px}
 input:focus{outline:none;border-color:var(--brand)}
-.btn{width:100%;padding:14px;border:none;border-radius:14px;background:var(--brand);color:#fff;font-weight:700;font-size:.95rem;font-family:inherit;cursor:pointer}
-.btn:disabled{opacity:.6}
+.btn{width:100%;padding:14px;border:none;border-radius:28px;background:var(--brand);color:#fff;font-weight:800;font-size:.95rem;font-family:inherit;cursor:pointer}
+.btn:disabled{opacity:.55}
 .hint{font-size:.75rem;color:var(--muted);text-align:center;margin-top:8px}
-.tabs{display:flex;gap:6px;margin-bottom:14px}
-.tabs button{flex:1;padding:10px;border:1px solid var(--border);background:var(--card);border-radius:12px;font-family:inherit;font-weight:600;font-size:.82rem;color:var(--muted);cursor:pointer}
-.tabs button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.tabs{display:flex;gap:6px;margin-bottom:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px}
+.tabs button{flex:1;padding:10px;border:none;background:transparent;border-radius:11px;font-family:inherit;font-weight:700;font-size:.82rem;color:var(--muted);cursor:pointer}
+.tabs button.on{background:var(--brand);color:#fff}
 .status-hero{text-align:center;padding:8px 0 4px}
 .status-hero .emoji{font-size:2.4rem;margin-bottom:8px}
 .status-hero h3{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
 .status-hero p{color:var(--muted);font-size:.88rem;margin-top:4px}
 .timeline{margin:20px 0 8px;padding-left:8px}
 .tl-item{display:flex;gap:12px;padding-bottom:18px;position:relative}
-.tl-item:not(:last-child)::before{content:"";position:absolute;left:9px;top:22px;bottom:0;width:2px;background:var(--border)}
+.tl-item:not(:last-child)::before{content:"";position:absolute;left:9px;top:22px;bottom:0;width:2px;background:var(--line)}
 .tl-item.done:not(:last-child)::before{background:var(--green)}
-.tl-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);background:var(--card);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;z-index:1}
+.tl-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:var(--card);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;z-index:1}
 .tl-item.done .tl-dot{background:var(--green);border-color:var(--green);color:#fff}
-.tl-item.active .tl-dot{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 0 0 4px rgba(255,92,26,.2)}
+.tl-item.active .tl-dot{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 0 0 4px var(--brand-soft)}
 .tl-body{flex:1;padding-top:1px}
-.tl-body strong{font-size:.9rem;display:block}
+.tl-body strong{font-size:.9rem;display:block;font-weight:700}
 .tl-body span{font-size:.78rem;color:var(--muted)}
-.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.detail{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.88rem}
 .detail:last-child{border:none}
 .detail .l{color:var(--muted)}
-.detail .v{font-weight:600;text-align:right;max-width:62%}
-.badge{font-size:.65rem;font-weight:700;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.detail .v{font-weight:700;text-align:right;max-width:62%}
+.badge{font-size:.65rem;font-weight:800;text-transform:uppercase;padding:4px 10px;border-radius:20px;letter-spacing:.03em}
 .badge.done{background:var(--surface2);color:var(--muted)}
 .empty{text-align:center;padding:28px 12px;color:var(--muted);font-size:.9rem}
-.eta{display:inline-block;margin-top:10px;background:var(--surface2);padding:6px 12px;border-radius:20px;font-size:.8rem;font-weight:600}
-.err{background:rgba(239,68,68,.1);color:#ef4444;padding:10px 12px;border-radius:10px;font-size:.85rem;margin-bottom:12px;display:none}
+.eta{display:inline-block;margin-top:10px;background:var(--brand-soft);color:var(--brand);padding:6px 12px;border-radius:20px;font-size:.8rem;font-weight:700}
+.err{background:rgba(239,68,68,.1);color:#ef4444;padding:10px 12px;border-radius:12px;font-size:.85rem;margin-bottom:12px;display:none}
+.item-chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0}
+.item-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface2);border:1px solid var(--line);border-radius:999px;font-size:.82rem;font-weight:600;color:var(--text)}
+@media(min-width:640px){.wrap{padding-top:24px}}
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="logo">K</div>
   <h1>Track order</h1>
-  <button type="button" class="theme-btn" onclick="toggleTheme()"><span data-theme-icon>🌙</span></button>
-  <a href="customer.html">Menu</a>
+  <button type="button" class="icon-btn" onclick="toggleTheme()"><span data-theme-icon>🌙</span></button>
+  <a href="index.html">Menu</a>
 </header>
 <div class="wrap">
   <div class="card">
     <h2>Your phone number</h2>
     <div class="err" id="err"></div>
-    <input type="tel" id="phone" placeholder="e.g. 082 123 4567 or 063 169 4359" inputmode="tel">
+    <input type="tel" id="phone" placeholder="e.g. 082 123 4567" inputmode="tel">
     <button class="btn" id="btn" type="button">Find my orders</button>
     <p class="hint">Use the same number you used when ordering</p>
   </div>
@@ -98,31 +113,11 @@ const STEPS=[
 ];
 const STATUS_ALIAS={preparing:"cooking",delivered:"done"};
 let allOrders=[], view="live", pollTimer=null;
-
-// Fix: sheet often stores phone as 631694359 (no leading 0)
 function digits(p){ return String(p||"").replace(/\D/g,""); }
-function norm(p){
-  let d=digits(p);
-  if(d.startsWith("27") && d.length>=11) d="0"+d.slice(2);
-  if(d.length===9) d="0"+d; // missing leading 0
-  return d;
-}
-function phonesMatch(a,b){
-  const na=norm(a), nb=norm(b);
-  if(!na||!nb) return false;
-  if(na===nb) return true;
-  return na.slice(-9)===nb.slice(-9);
-}
-function statusKey(s){
-  s=String(s||"new").toLowerCase();
-  // pending tag in notes handled below
-  return STATUS_ALIAS[s]||s;
-}
-function stepIndex(s){
-  const k=statusKey(s);
-  const i=STEPS.findIndex(x=>x.key===k);
-  return i<0?1:i; // default to "new" step
-}
+function norm(p){ let d=digits(p); if(d.startsWith("27")&&d.length>=11)d="0"+d.slice(2); if(d.length===9)d="0"+d; return d; }
+function phonesMatch(a,b){ const na=norm(a),nb=norm(b); if(!na||!nb)return false; if(na===nb)return true; return na.slice(-9)===nb.slice(-9); }
+function statusKey(s){ s=String(s||"new").toLowerCase(); return STATUS_ALIAS[s]||s; }
+function stepIndex(s){ const k=statusKey(s); const i=STEPS.findIndex(x=>x.key===k); return i<0?1:i; }
 function setView(v){
   view=v;
   document.querySelectorAll('#view-tabs button').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
@@ -147,33 +142,21 @@ function showErr(msg){
   if(!msg){ el.style.display='none'; el.textContent=''; return; }
   el.style.display='block'; el.textContent=msg;
 }
-
+function formatItemChips(items){
+  if(!items||items==='—') return '<span class="item-chip">—</span>';
+  return String(items).split(/,\s*/).filter(Boolean).map(part=>`<span class="item-chip">${part.trim()}</span>`).join('')||'<span class="item-chip">—</span>';
+}
 function normalizeOrder(o){
   let notes=String(o.notes||"");
   let st=statusKey(o.status);
-  if(/\[PENDING:1\]/i.test(notes) && (st==='new'||st==='pending')) st='pending';
-  notes=notes.replace(/\[PENDING:1\]/gi,'').replace(/\[PAY:(cash|paid)\]/gi,'').replace(/\[CODE:[^\]]+\]/gi,'').replace(/\[FEE:\d+\]/gi,'').trim();
-  return {
-    id:o.id,
-    name:o.name,
-    phone:o.phone,
-    address:o.address,
-    notes,
-    items:o.items||'—',
-    total:o.total,
-    status:st,
-    timestamp:o.timestamp||o.updated||'',
-    updated:o.updated||o.timestamp||''
-  };
+  if(/\[PENDING:1\]/i.test(notes)&&(st==='new'||st==='pending')) st='pending';
+  notes=notes.replace(/\[PENDING:1\]/gi,'').replace(/\[PAY:(cash|paid)\]/gi,'').replace(/\[CODE:[^\]]+\]/gi,'').replace(/\[FEE:\d+\]/gi,'').replace(/\[MODE:(delivery|pickup)\]/gi,'').trim();
+  return {id:o.id,name:o.name,phone:o.phone,address:o.address,notes,items:o.items||'—',total:o.total,status:st,timestamp:o.timestamp||o.updated||'',updated:o.updated||o.timestamp||''};
 }
-
 function renderLive(){
   const el=document.getElementById('live-view');
   const active=allOrders.filter(o=>!['done','delivered'].includes(o.status));
-  if(!active.length){
-    el.innerHTML=`<div class="card"><div class="empty">No active orders.<br>Check History for past orders.</div></div>`;
-    return;
-  }
+  if(!active.length){ el.innerHTML=`<div class="card"><div class="empty">No active orders.<br>Check History for past orders.</div></div>`; return; }
   el.innerHTML=active.map(o=>{
     const idx=stepIndex(o.status);
     const st=STEPS[idx]||STEPS[1];
@@ -194,15 +177,15 @@ function renderLive(){
       </div>
       <div class="timeline">${tl}</div>
       <div class="detail"><span class="l">Order</span><span class="v">${o.id||'—'}</span></div>
-      <div class="detail"><span class="l">Items</span><span class="v">${o.items}</span></div>
-      <div class="detail"><span class="l">Total</span><span class="v">R${o.total}</span></div>
+      <div style="margin:10px 0 4px;font-size:.78rem;color:var(--muted);font-weight:700">Items</div>
+      <div class="item-chips">${formatItemChips(o.items)}</div>
+      <div class="detail"><span class="l">Total</span><span class="v" style="color:var(--brand);font-weight:800">R${o.total}</span></div>
       <div class="detail"><span class="l">Address</span><span class="v">${o.address||'—'}</span></div>
       ${o.notes?`<div class="detail"><span class="l">Notes</span><span class="v">${o.notes}</span></div>`:''}
       <div class="detail"><span class="l">Updated</span><span class="v">${o.updated||'—'}</span></div>
     </div>`;
   }).join('');
 }
-
 function renderHistory(){
   const el=document.getElementById('history-view');
   const hist=allOrders.filter(o=>['done','delivered'].includes(o.status));
@@ -213,39 +196,32 @@ function renderHistory(){
         <strong style="font-size:.95rem">${o.timestamp||o.id}</strong>
         <span class="badge done">Delivered</span>
       </div>
-      <div class="detail"><span class="l">Items</span><span class="v">${o.items}</span></div>
-      <div class="detail"><span class="l">Total</span><span class="v">R${o.total}</span></div>
+      <div style="margin:8px 0 4px;font-size:.78rem;color:var(--muted);font-weight:700">Items</div>
+      <div class="item-chips">${formatItemChips(o.items)}</div>
+      <div class="detail"><span class="l">Total</span><span class="v" style="color:var(--brand);font-weight:800">R${o.total}</span></div>
       <div class="detail"><span class="l">Address</span><span class="v">${o.address||'—'}</span></div>
     </div>`).join('');
 }
-
 async function lookup(silent){
   const raw=document.getElementById('phone').value.trim();
   if(!raw){ if(!silent) showErr('Enter your phone number'); return; }
   showErr('');
   const phone=norm(raw);
   if(digits(phone).length<9){ if(!silent) showErr('Enter a valid phone number'); return; }
-
   const btn=document.getElementById('btn');
   if(!silent){ btn.disabled=true; btn.textContent='Finding…'; }
-
   try{
     const res=await fetch(SHEETS+'?t='+Date.now(),{cache:'no-store'});
     if(!res.ok) throw new Error('Network error '+res.status);
     const data=await res.json();
-    const list = Array.isArray(data.orders) ? data.orders : (Array.isArray(data) ? data : []);
+    const list=Array.isArray(data.orders)?data.orders:(Array.isArray(data)?data:[]);
     allOrders=list.filter(o=>phonesMatch(o.phone, phone)).map(normalizeOrder)
       .sort((a,b)=>(Date.parse(b.updated||b.timestamp)||0)-(Date.parse(a.updated||a.timestamp)||0));
-
     document.getElementById('view-tabs').style.display='flex';
     if(!allOrders.length){
       document.getElementById('live-view').innerHTML=`<div class="card"><div class="empty">No orders found for <strong>${raw}</strong>.<br>Check the number and try again.</div></div>`;
       document.getElementById('history-view').innerHTML='';
-    } else {
-      renderLive();
-      renderHistory();
-      setView('live');
-    }
+    } else { renderLive(); renderHistory(); setView('live'); }
     try{ localStorage.setItem('kota_track_phone', raw); }catch(e){}
     if(!pollTimer) pollTimer=setInterval(()=>lookup(true), 8000);
   }catch(e){
@@ -254,16 +230,10 @@ async function lookup(silent){
   }
   if(!silent){ btn.disabled=false; btn.textContent='Find my orders'; }
 }
-
 document.getElementById('btn').addEventListener('click', ()=>lookup(false));
 document.getElementById('phone').addEventListener('keydown', e=>{ if(e.key==='Enter') lookup(false); });
-document.querySelectorAll('#view-tabs button').forEach(b=>{
-  b.addEventListener('click', ()=>setView(b.dataset.v));
-});
-try{
-  const saved=localStorage.getItem('kota_track_phone');
-  if(saved){ document.getElementById('phone').value=saved; }
-}catch(e){}
+document.querySelectorAll('#view-tabs button').forEach(b=>{ b.addEventListener('click', ()=>setView(b.dataset.v)); });
+try{ const saved=localStorage.getItem('kota_track_phone'); if(saved) document.getElementById('phone').value=saved; }catch(e){}
 </script>
 </body>
 </html>

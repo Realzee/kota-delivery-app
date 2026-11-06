@@ -31,183 +31,316 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Kota Delivery App · Kitchen</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* KOTA_THEME_UNIFIED */
-
-:root, [data-theme="light"]{
-  --bg:#f6f7f9; --card:#ffffff; --surface:#ffffff; --surface2:#f0f2f5; --border:#e8eaed;
-  --text:#1a1a1a; --muted:#6b7280; --brand:#ff5c1a; --orange:#ff5c1a; --green:#06c167;
-  --green-dim:rgba(6,193,103,.12); --blue:#3b82f6; --blue-dim:rgba(59,130,246,.12);
-  --yellow:#eab308; --yellow-dim:rgba(234,179,8,.15); --red:#ef4444;
-  --shadow:0 2px 12px rgba(0,0,0,.06); --header-bg:rgba(255,255,255,.96); --input-bg:#ffffff;
+/* Kota Delivery App — Kitchen theme */
+:root, [data-theme="light"] {
+  --bg: #f2f4f7;
+  --card: #ffffff;
+  --surface2: #e9edf2;
+  --text: #0f1419;
+  --muted: #667085;
+  --line: #e4e7ec;
+  --border: #e4e7ec;
+  --brand: #ff4d00;
+  --orange: #ff4d00;
+  --brand-soft: rgba(255, 77, 0, 0.10);
+  --green: #12b76a;
+  --green-dim: rgba(18, 183, 106, 0.14);
+  --blue: #2e90fa;
+  --blue-dim: rgba(46, 144, 250, 0.14);
+  --yellow: #f79009;
+  --yellow-dim: rgba(247, 144, 9, 0.16);
+  --red: #f04438;
+  --red-dim: rgba(240, 68, 56, 0.12);
+  --shadow: 0 4px 24px rgba(16, 24, 40, 0.06);
+  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06);
+  --radius: 16px;
+  --header-bg: rgba(255, 255, 255, 0.92);
+  --input-bg: #ffffff;
+  --tab-bg: #ffffff;
+  --overlay: rgba(15, 20, 25, 0.45);
+  --badge-new-bg: rgba(247, 144, 9, 0.14);
+  --badge-new: #b54708;
+  --badge-cook-bg: rgba(46, 144, 250, 0.14);
+  --badge-cook: #175cd3;
+  --badge-ready-bg: rgba(18, 183, 106, 0.14);
+  --badge-ready: #027a48;
+  --badge-pending-bg: rgba(240, 68, 56, 0.12);
+  --badge-pending: #b42318;
 }
-[data-theme="dark"]{
-  --bg:#0b0c0f; --card:#14161a; --surface:#14161a; --surface2:#1c1f26; --border:#2a2e38;
-  --text:#f1f3f5; --muted:#8b93a7; --brand:#ff5c1a; --orange:#ff5c1a; --green:#22c55e;
-  --green-dim:rgba(34,197,94,.15); --blue:#3b82f6; --blue-dim:rgba(59,130,246,.15);
-  --yellow:#eab308; --yellow-dim:rgba(234,179,8,.15); --red:#ef4444;
-  --shadow:0 2px 16px rgba(0,0,0,.4); --header-bg:rgba(11,12,15,.96); --input-bg:#1c1f26;
+[data-theme="dark"] {
+  --bg: #0b0d12;
+  --card: #141821;
+  --surface2: #1b2130;
+  --text: #f5f7fa;
+  --muted: #98a2b3;
+  --line: #2a3344;
+  --border: #2a3344;
+  --brand: #ff5c1a;
+  --orange: #ff5c1a;
+  --brand-soft: rgba(255, 92, 26, 0.16);
+  --green: #32d583;
+  --green-dim: rgba(50, 213, 131, 0.16);
+  --blue: #53b1fd;
+  --blue-dim: rgba(83, 177, 253, 0.16);
+  --yellow: #fdb022;
+  --yellow-dim: rgba(253, 176, 34, 0.16);
+  --red: #f97066;
+  --red-dim: rgba(249, 112, 102, 0.16);
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --radius: 16px;
+  --header-bg: rgba(11, 13, 18, 0.92);
+  --input-bg: #1b2130;
+  --tab-bg: #141821;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --badge-new-bg: rgba(253, 176, 34, 0.16);
+  --badge-new: #fdb022;
+  --badge-cook-bg: rgba(83, 177, 253, 0.16);
+  --badge-cook: #53b1fd;
+  --badge-ready-bg: rgba(50, 213, 131, 0.16);
+  --badge-ready: #32d583;
+  --badge-pending-bg: rgba(249, 112, 102, 0.16);
+  --badge-pending: #f97066;
 }
-html, body { background: var(--bg) !important; color: var(--text) !important; }
-.topbar, header { background: var(--header-bg) !important; border-color: var(--border) !important; color: var(--text); }
-.card, .menu-card, .modal-sheet, .stat-card, .cash-box, .receipt { background: var(--card) !important; border-color: var(--border) !important; color: var(--text); }
-input, textarea, select { background: var(--input-bg) !important; color: var(--text) !important; border-color: var(--border) !important; }
-.cart-bar { background: var(--card) !important; border-color: var(--border) !important; color: var(--text); }
-.tabs { border-color: var(--border) !important; }
-.tabs button { color: var(--muted); }
-.tabs button.active { color: var(--brand); }
-.theme-btn{
-  width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
-  background:var(--surface2);color:var(--text);cursor:pointer;font-size:1.1rem;
-  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.theme-btn:active{transform:scale(.96)}
-.header-actions{display:flex;align-items:center;gap:10px}
-.meta, .hint, .sub, .sync-label { color: var(--muted); }
-
-
-
-/* Theme tokens */
-:root, [data-theme="light"]{
-  --bg:#f6f7f9; --card:#ffffff; --surface2:#f0f2f5; --border:#e8eaed;
-  --text:#1a1a1a; --muted:#6b7280; --brand:#ff5c1a; --green:#06c167;
-  --shadow:0 2px 12px rgba(0,0,0,.06); --header-bg:rgba(255,255,255,.94);
-  --input-bg:#fff; --banner-new-bg:#fef9c3; --banner-new:#a16207;
-  --banner-cook-bg:#dbeafe; --banner-cook:#1d4ed8; --banner-ready-bg:#dcfce7; --banner-ready:#15803d;
-  --banner-out-bg:#ffedd5; --banner-out:#c2410c; --banner-done-bg:#f3f4f6; --banner-done:#6b7280;
-}
-[data-theme="dark"]{--surface:var(--card);--orange:var(--brand);
-  --bg:#0b0c0f; --card:#14161a; --surface2:#1c1f26; --border:#2a2e38;
-  --text:#f1f3f5; --muted:#8b93a7; --brand:#ff5c1a; --green:#22c55e;
-  --shadow:0 2px 16px rgba(0,0,0,.35); --header-bg:rgba(11,12,15,.94);
-  --input-bg:#1c1f26; --banner-new-bg:rgba(234,179,8,.15); --banner-new:#eab308;
-  --banner-cook-bg:rgba(59,130,246,.15); --banner-cook:#60a5fa; --banner-ready-bg:rgba(34,197,94,.15); --banner-ready:#22c55e;
-  --banner-out-bg:rgba(249,115,22,.15); --banner-out:#fb923c; --banner-done-bg:rgba(139,147,167,.15); --banner-done:#9ca3af;
-}
-
-html, body { background: var(--bg) !important; color: var(--text) !important; }
-.topbar, header { background: var(--header-bg) !important; border-color: var(--border) !important; }
-.card, .menu-card, .modal-sheet, .stat-card, .cash-box { background: var(--card) !important; border-color: var(--border) !important; color: var(--text); }
-.hero, .section-title, .menu-body h3 { color: var(--text); }
-input, textarea, select { background: var(--input-bg) !important; color: var(--text) !important; border-color: var(--border) !important; }
-.cart-bar { background: var(--card) !important; border-color: var(--border) !important; }
-.tabs { background: var(--bg); border-color: var(--border); }
-.tabs button { color: var(--muted); }
-.tabs button.active { color: var(--brand); }
-
-.header-actions{display:flex;align-items:center;gap:10px}
-.theme-btn{
-  width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
-  background:var(--surface2);color:var(--text);cursor:pointer;font-size:1.1rem;
-  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
-  box-shadow:var(--shadow);
-}
-.theme-btn:active{transform:scale(.96)}
-
-
-:root, [data-theme="light"]{--bg:#f6f7f9;--card:#ffffff;--surface2:#f0f2f5;--border:#e8eaed;--text:#1a1a1a;--muted:#6b7280;--brand:#ff5c1a;--green:#06c167;--green-dim:rgba(6,193,103,.12);--blue:#3b82f6;--blue-dim:rgba(59,130,246,.12);--yellow:#eab308;--yellow-dim:rgba(234,179,8,.15);--red:#ef4444;--radius:14px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
-header{position:sticky;top:0;z-index:50;background:var(--header-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:0 1px 8px rgba(0,0,0,.04);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:11px}
-.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--orange),#ff8a4c);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;color:#fff}
-.brand h1{font-size:1.02rem;font-weight:700;letter-spacing:-.02em}
-.brand span{font-size:.7rem;color:var(--muted);font-weight:500;display:block}
-.live-pill{display:flex;align-items:center;gap:6px;background:var(--green-dim);color:var(--green);font-size:.7rem;font-weight:700;letter-spacing:.04em;padding:5px 11px;border-radius:20px}
+html,body{background:var(--bg)!important;color:var(--text)!important}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  line-height:1.45;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+/* Header */
+header{
+  position:sticky;top:0;z-index:50;
+  background:var(--header-bg)!important;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-sm);
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--brand),#ff8a4c);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#fff;flex-shrink:0;
+}
+.brand h1{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.brand span{font-size:.72rem;color:var(--muted);display:block}
+.header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.theme-btn,.icon-btn{
+  width:40px;height:40px;border-radius:12px;
+  border:1px solid var(--border);background:var(--card);
+  color:var(--text);cursor:pointer;font-size:1.05rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s;
+}
+.theme-btn:hover,.icon-btn:hover{background:var(--surface2)}
+.theme-btn:active{transform:scale(.96)}
+.live-pill{
+  display:flex;align-items:center;gap:6px;
+  background:var(--green-dim);color:var(--green);
+  font-size:.7rem;font-weight:800;letter-spacing:.04em;
+  padding:6px 12px;border-radius:20px;white-space:nowrap;
+}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.tabs{display:flex;gap:2px;padding:10px 12px 0;border-bottom:1px solid var(--border);overflow-x:auto}
-.tabs button{flex-shrink:0;padding:10px 14px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent}
-.tabs button.active{color:var(--orange);border-bottom-color:var(--orange)}
-.panel{display:none;padding:16px 14px 48px;max-width:560px;margin:0 auto}
+.sync-label{font-size:.68rem;color:var(--muted);white-space:nowrap}
+/* Tabs */
+.tabs{
+  display:flex;gap:4px;padding:10px 12px 0;
+  border-bottom:1px solid var(--border);
+  background:var(--tab-bg);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  position:sticky;top:65px;z-index:40;
+}
+.tabs button{
+  flex-shrink:0;padding:11px 14px;border:none;background:transparent;
+  color:var(--muted);font-family:inherit;font-size:.84rem;font-weight:700;
+  cursor:pointer;border-bottom:2px solid transparent;border-radius:10px 10px 0 0;
+  transition:color .15s,background .15s;
+}
+.tabs button:hover{color:var(--text);background:var(--surface2)}
+.tabs button.active{color:var(--brand);border-bottom-color:var(--brand);background:transparent}
+/* Panels */
+.panel{display:none;padding:16px 14px 72px;max-width:720px;margin:0 auto}
 .panel.active{display:block}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;margin-bottom:11px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.section-head h2{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
+.count-badge{background:var(--brand);color:#fff;font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:20px}
+/* Cards */
+.card{
+  background:var(--card)!important;border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;margin-bottom:12px;
+  box-shadow:var(--shadow-sm);color:var(--text);
+}
+.card.receipt{padding:14px}
 .card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
-.card h3{font-size:1.02rem;font-weight:700}
-.meta{font-size:.8rem;color:var(--muted);margin-top:2px}
-.items-box{background:var(--surface2);border-radius:10px;padding:10px 12px;margin:9px 0;font-size:.88rem}
-.total-row{display:flex;justify-content:space-between;font-weight:700;font-size:1.02rem;color:var(--orange);margin-top:6px}
-.receipt{border:1px dashed var(--border);border-radius:12px;overflow:hidden}
-.receipt-top{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--surface2);border-bottom:1px dashed var(--border)}
-.receipt-id{font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
-.receipt-body{padding:14px}
-.receipt-row{display:flex;justify-content:space-between;padding:4px 0;font-size:.88rem}
-.receipt-row .lbl{color:var(--muted)}
-.receipt-items{margin:10px 0;padding:10px 0;border-top:1px dashed var(--border);border-bottom:1px dashed var(--border)}
-.receipt-item{display:flex;justify-content:space-between;padding:3px 0;font-size:.9rem}
-.receipt-item .qty{color:var(--orange);font-weight:700;min-width:32px}
-.receipt-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px}
-.receipt-total{font-size:1.2rem;font-weight:800;color:var(--orange)}
-.receipt-pay{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:20px}
-.receipt-pay.cash{background:rgba(234,179,8,.15);color:var(--yellow)}
-.receipt-pay.paid{background:var(--green-dim);color:var(--green)}
-.age{font-size:.75rem;font-weight:600;margin-top:4px;color:var(--muted)}
-.age.old{color:var(--red)}
-.badge{font-size:.66rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:20px;white-space:nowrap}
-.badge.new{background:var(--yellow-dim);color:var(--yellow)}
-.badge.cooking{background:var(--blue-dim);color:#60a5fa}
-.badge.ready{background:var(--green-dim);color:var(--green)}
-.badge.done{background:rgba(139,147,167,.15);color:var(--muted)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border:none;border-radius:10px;font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer}
+.card h3{font-size:1.02rem;font-weight:800}
+.meta{font-size:.82rem;color:var(--muted);margin-top:3px}
+.total-row{display:flex;justify-content:space-between;font-weight:800;font-size:1.05rem;color:var(--brand);margin-top:8px}
+/* Badges */
+.badge{font-size:.66rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:20px}
+.badge.new{background:var(--badge-new-bg);color:var(--badge-new)}
+.badge.cooking{background:var(--badge-cook-bg);color:var(--badge-cook)}
+.badge.ready{background:var(--badge-ready-bg);color:var(--badge-ready)}
+.badge.pending{background:var(--badge-pending-bg);color:var(--badge-pending)}
+.badge.done{background:var(--surface2);color:var(--muted)}
+.age{font-size:.75rem;color:var(--muted);margin-top:4px}
+.age.old{color:var(--red);font-weight:700}
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 14px;border:none;border-radius:12px;
+  font-family:inherit;font-size:.84rem;font-weight:700;cursor:pointer;
+  transition:transform .1s,opacity .15s,background .15s;
+  color:#fff;
+}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:var(--orange);color:#fff}
-.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-primary,.btn-sm.btn-primary{background:var(--brand);color:#fff}
 .btn-green{background:var(--green);color:#fff}
 .btn-blue{background:var(--blue);color:#fff}
-.btn-sm{padding:7px 11px;font-size:.78rem;border-radius:8px}
+.btn-secondary{
+  background:var(--surface2)!important;color:var(--text)!important;
+  border:1px solid var(--border);
+}
 .btn-full{width:100%}
-.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
-.form-group{margin-bottom:13px}
-.form-group label{display:block;font-size:.76rem;font-weight:600;color:var(--muted);margin-bottom:4px}
-input,textarea,select{width:100%;padding:11px 13px;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:.93rem;background:var(--card)}
-input:focus,textarea:focus{outline:none;border-color:var(--orange)}
-textarea{resize:vertical;min-height:64px}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.section-head h2{font-size:1.1rem;font-weight:700}
-.count-badge{background:var(--orange);color:#fff;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:20px}
-.empty{text-align:center;padding:48px 16px;color:var(--muted)}
-.empty-icon{font-size:2.4rem;margin-bottom:10px;opacity:.45}
-.item-check{display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--surface2);border-radius:10px;margin-bottom:5px}
-.item-check input[type=checkbox]{width:17px;height:17px;accent-color:var(--orange);flex-shrink:0}
-.item-check label{flex:1;font-size:.88rem;cursor:pointer}
-.item-check .qty{width:52px;padding:5px 6px;text-align:center}
-.menu-row{display:flex;gap:7px;align-items:center;margin-bottom:7px}
-.menu-row input{flex:1}
-.menu-row .price-input{max-width:84px}
+.btn-sm{padding:8px 12px;font-size:.8rem;width:auto}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+/* Forms */
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.03em}
+input,textarea,select{
+  width:100%;padding:12px 14px;
+  background:var(--input-bg)!important;border:1.5px solid var(--border);
+  border-radius:12px;color:var(--text)!important;font-family:inherit;font-size:.93rem;
+}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+/* New order item rows */
+.item-check{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  margin-bottom:8px;box-shadow:var(--shadow-sm);
+}
+.item-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);flex-shrink:0}
+.item-check label{flex:1;font-size:.9rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--text)}
+.item-check .item-name{flex:1;line-height:1.3}
+.item-check .item-price{font-weight:800;color:var(--brand);font-size:.95rem;white-space:nowrap}
+.item-check .qty{
+  width:48px;padding:6px;text-align:center;border-radius:8px;
+  border:1px solid var(--border);background:var(--input-bg);color:var(--text);
+}
+.item-chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.item-chip{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 12px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:999px;
+  font-size:.82rem;font-weight:600;color:var(--text);
+}
+.item-chip .chip-price{font-weight:800;color:var(--brand)}
+.item-chip img{
+  width:28px;height:28px;border-radius:8px;object-fit:cover;
+  flex-shrink:0;background:var(--surface2);border:1px solid var(--border);
+}
+.item-chip .chip-ph{
+  width:28px;height:28px;border-radius:8px;background:var(--surface2);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.65rem;flex-shrink:0;border:1px solid var(--border);
+}
+/* Stats / till */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
-.stat-card .num{font-size:1.7rem;font-weight:800;color:var(--orange)}
-.stat-card .lbl{font-size:.75rem;color:var(--muted);margin-top:2px;font-weight:500}
-.pay-row{display:flex;gap:8px}
-.pay-row label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer}
-.pay-row input{width:auto;accent-color:var(--orange)}
-.pay-row label.selected{border-color:var(--orange);background:rgba(255,92,26,.1)}
-
+.stat-card{
+  background:var(--card)!important;border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);
+}
+.stat-card .num{font-size:1.5rem;font-weight:800;color:var(--brand)}
+.stat-card .lbl{font-size:.75rem;color:var(--muted);margin-top:4px;font-weight:600}
+.cash-box{
+  background:var(--card)!important;border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+}
+.cash-box .num{font-size:2rem;font-weight:800;color:var(--brand)}
+.cash-box .lbl{font-size:.8rem;color:var(--muted);margin-top:4px}
+/* Menu editor */
+.menu-row{
+  display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;
+  padding:12px;background:var(--card);border:1px solid var(--border);
+  border-radius:14px;margin-bottom:10px;
+}
+.menu-row .thumb,.menu-row .thumb-ph{
+  width:56px;height:56px;border-radius:12px;object-fit:cover;
+  background:var(--surface2);display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:var(--muted);overflow:hidden;
+}
+.menu-row .thumb{width:56px;height:56px}
+.menu-row input.name{font-weight:700}
+.menu-row .price{max-width:90px}
+/* Modal */
+#app-modal{
+  display:none;position:fixed;inset:0;background:var(--overlay);
+  z-index:200;align-items:center;justify-content:center;padding:16px;
+}
+#app-modal .box,#app-modal > div{
+  background:var(--card)!important;color:var(--text);
+  border:1px solid var(--border);border-radius:18px;
+  max-width:380px;width:100%;padding:22px;box-shadow:var(--shadow);
+}
+#app-modal h3{font-size:1.08rem;font-weight:800;margin-bottom:8px;color:var(--text)}
+#app-modal p{font-size:.9rem;color:var(--muted);margin-bottom:16px;line-height:1.45}
+#app-modal .row, #app-modal div[style*="display:flex"]{display:flex;gap:8px}
+#app-modal .btn{flex:1}
+/* Empty */
+.empty{text-align:center;padding:48px 16px;color:var(--muted)}
+.empty-icon{font-size:2.4rem;margin-bottom:10px;opacity:.5}
+/* Receipt print */
+.receipt-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.receipt-id{font-size:.75rem;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.receipt-items{margin:8px 0}
+.receipt-item{display:flex;justify-content:space-between;padding:4px 0;font-size:.88rem}
+.receipt-row{display:flex;justify-content:space-between;padding:4px 0;font-size:.85rem}
+.receipt-row .lbl{color:var(--muted)}
+.receipt-pay{font-size:.75rem;font-weight:800;padding:4px 8px;border-radius:8px}
+.receipt-pay.cash{background:var(--yellow-dim);color:var(--yellow)}
+.receipt-pay.paid{background:var(--green-dim);color:var(--green)}
+/* Pay type chips */
+.pay-type{display:flex;gap:8px;margin-bottom:12px}
+.pay-type button{
+  flex:1;padding:10px;border:2px solid var(--border);border-radius:12px;
+  background:var(--card);color:var(--text);font-family:inherit;font-weight:700;
+  font-size:.82rem;cursor:pointer;
+}
+.pay-type button.selected{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--brand);color:#fff;padding:12px 20px;border-radius:14px;
+  font-weight:700;font-size:.9rem;z-index:100;opacity:0;transition:all .3s;
+  max-width:90%;text-align:center;box-shadow:var(--shadow);
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+/* Responsive */
+@media (max-width:480px){
+  .panel{padding:14px 12px 72px}
+  .tabs button{font-size:.78rem;padding:10px 11px}
+  .card{padding:14px}
+  .sync-label{display:none}
+  .brand h1{font-size:.95rem}
+}
+@media (min-width:768px){
+  .panel{max-width:800px;padding:20px 20px 80px}
+  .stats-grid{grid-template-columns:repeat(4,1fr)}
+}
 @media print{
   body *{visibility:hidden}
   .print-area,.print-area *{visibility:visible}
-  .print-area{position:absolute;left:0;top:0;width:100%;background:var(--card);color:#000;padding:20px}
-  .actions,.tabs,header,.live-pill,.section-head{display:none!important}
+  .print-area{position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;padding:20px}
+  .actions,.tabs,header,.live-pill,.section-head,#app-modal{display:none!important}
 }
-
-
-.menu-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.menu-row .thumb{width:48px;height:48px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);object-fit:cover;flex-shrink:0}
-.menu-row .thumb-ph{width:48px;height:48px;border-radius:10px;background:var(--surface2);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--muted);flex-shrink:0}
-.menu-row .name{flex:1;min-width:120px}
-.menu-row .price-input{max-width:84px}
-.menu-row .img-tools{width:100%;display:flex;gap:6px;align-items:center}
-.menu-row .img-tools input[type=text]{flex:1;font-size:.8rem;padding:8px 10px}
-.menu-row .img-tools input[type=file]{font-size:.72rem;max-width:140px}
-
-
-#panel-menu .card{margin-bottom:14px}
-#panel-menu h2{letter-spacing:-.02em}
-#panel-menu .form-group label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
-.menu-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.menu-toolbar .btn{width:auto}
-
 </style>
 </head>
 <body>
@@ -363,28 +496,28 @@ textarea{resize:vertical;min-height:64px}
 <script>
 const SHEETS="https://script.google.com/macros/s/AKfycbxg71IdS6OulHZdeYds79butV1ku-E1I2YSBkkb3R8vU3eim03nYq3QrK1TNdAtqiaWAQ/exec";
 const DEFAULT_MENU=[
-  { id:"k1", name:"Kota: Chips, Atchar, French", price:15, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"k2", name:"Kota: Chips, Atchar, French, Egg or Cheese", price:18, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"k3", name:"Kota: Chips, Atchar, French, Cheese, Egg", price:22, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"k4", name:"Kota: Chips, Atchar, French, Vienna, Cheese, Egg", price:28, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"k5", name:"Kota: Chips, Atchar, French, Vienna, Cheese, Egg, Fish", price:42, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"k6", name:"Kota: Chips, Atchar, French, Cheese, Egg, Vienna, Russian, Fish", price:50, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"k7", name:"Kota: Chips, Atchar, French, Cheese, Vienna, Russian, Burger, Fish", price:65, image:"menu-images/kota.jpg", cat:"Kota" },
-  { id:"a_french", name:"Add: French", price:5, image:"menu-images/kota.jpg", cat:"Add-ons" },
-  { id:"a_patty", name:"Add: Burger Patty", price:15, image:"menu-images/kota2.jpg", cat:"Add-ons" },
-  { id:"a_pork", name:"Add: Pork Burger", price:25, image:"menu-images/kota2.jpg", cat:"Add-ons" },
-  { id:"a_fish", name:"Add: Fish", price:15, image:"menu-images/kota.jpg", cat:"Add-ons" },
-  { id:"a_egg", name:"Add: Egg", price:7, image:"menu-images/kota.jpg", cat:"Add-ons" },
-  { id:"a_cheese", name:"Add: Cheese", price:7, image:"menu-images/kota.jpg", cat:"Add-ons" },
-  { id:"a_vienna", name:"Add: Vienna", price:13, image:"menu-images/wors.jpg", cat:"Add-ons" },
-  { id:"a_rus_big", name:"Add: Russian Big", price:20, image:"menu-images/wors.jpg", cat:"Add-ons" },
-  { id:"a_rus_sm", name:"Add: Russian Small", price:15, image:"menu-images/wors.jpg", cat:"Add-ons" },
-  { id:"alt_wors", name:"Wors Rolls with Chips", price:40, image:"menu-images/wors.jpg", cat:"Alternative" },
-  { id:"alt_beef", name:"Beef Burger + Chips", price:50, image:"menu-images/kota2.jpg", cat:"Alternative" },
-  { id:"alt_mash", name:"Kota Mash an Maotwana", price:23, image:"menu-images/kota2.jpg", cat:"Alternative" },
-  { id:"chips_s", name:"Chips Small", price:20, image:"menu-images/chips.jpg", cat:"Chips" },
-  { id:"chips_m", name:"Chips Medium", price:35, image:"menu-images/chips.jpg", cat:"Chips" },
-  { id:"chips_l", name:"Chips Larger", price:50, image:"menu-images/chips.jpg", cat:"Chips" }
+  { id:"k1", name:"Basic Kota", price:15, image:"menu-images/basic.jpg", cat:"Kota", detail:"Chips, atchar, French" },
+  { id:"k2", name:"Classic Kota", price:18, image:"menu-images/classic.jpg", cat:"Kota", detail:"Chips, atchar, French, egg or cheese" },
+  { id:"k3", name:"Cheese & Egg Kota", price:22, image:"menu-images/cheese-egg.jpg", cat:"Kota", detail:"Chips, atchar, French, cheese, egg" },
+  { id:"k4", name:"Vienna Kota", price:28, image:"menu-images/vienna.jpg", cat:"Kota", detail:"Chips, atchar, French, Vienna, cheese, egg" },
+  { id:"k5", name:"Fish Kota", price:42, image:"menu-images/fish.jpg", cat:"Kota", detail:"Chips, atchar, French, Vienna, cheese, egg, fish" },
+  { id:"k6", name:"Russian Fish Kota", price:50, image:"menu-images/russian-fish.jpg", cat:"Kota", detail:"Chips, atchar, French, cheese, egg, Vienna, Russian, fish" },
+  { id:"k7", name:"Full House Kota", price:65, image:"menu-images/fullhouse.jpg", cat:"Kota", detail:"Chips, atchar, French, cheese, Vienna, Russian, burger, fish" },
+  { id:"a_french", name:"French", price:5, image:"menu-images/french.jpg", cat:"Add-ons", detail:"Extra French" },
+  { id:"a_patty", name:"Burger Patty", price:15, image:"menu-images/patty.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_pork", name:"Pork Burger", price:25, image:"menu-images/pork.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_fish", name:"Fish", price:15, image:"menu-images/fish-add.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_egg", name:"Egg", price:7, image:"menu-images/egg.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_cheese", name:"Cheese", price:7, image:"menu-images/cheese.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_vienna", name:"Vienna", price:13, image:"menu-images/vienna-add.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_rus_big", name:"Russian Big", price:20, image:"menu-images/russian-big.jpg", cat:"Add-ons", detail:"" },
+  { id:"a_rus_sm", name:"Russian Small", price:15, image:"menu-images/russian-small.jpg", cat:"Add-ons", detail:"" },
+  { id:"alt_wors", name:"Wors Rolls + Chips", price:40, image:"menu-images/wors.jpg", cat:"Meals", detail:"Wors roll with chips" },
+  { id:"alt_beef", name:"Beef Burger + Chips", price:50, image:"menu-images/beef.jpg", cat:"Meals", detail:"" },
+  { id:"alt_mash", name:"Kota Mash an Maotwana", price:23, image:"menu-images/mash.jpg", cat:"Meals", detail:"" },
+  { id:"chips_s", name:"Chips Small", price:20, image:"menu-images/chips-s.jpg", cat:"Chips", detail:"" },
+  { id:"chips_m", name:"Chips Medium", price:35, image:"menu-images/chips-m.jpg", cat:"Chips", detail:"" },
+  { id:"chips_l", name:"Chips Larger", price:50, image:"menu-images/chips-l.jpg", cat:"Chips", detail:"" }
 ];
 let menu=[],orders=[],lastOrderIds=new Set(),payType="cash";
 let confirmedIds=new Set();
@@ -460,6 +593,7 @@ async function loadData(){
         let payment="cash",deliveryFee=0,notes=o.notes||"",confirmCode="",pending=false;
         const pend=notes.match(/\[PENDING:1\]/); if(pend){pending=true;notes=notes.replace(pend[0],"").trim()}
         const cm=notes.match(/\[CODE:([^\]]+)\]/); if(cm){confirmCode=cm[1];notes=notes.replace(cm[0],"").trim()}
+        const mm=notes.match(/\[MODE:(delivery|pickup)\]/); let fulfillMode=mm?mm[1]:"delivery"; if(mm) notes=notes.replace(mm[0],"").trim();
         const pm=notes.match(/\[PAY:(cash|paid)\]/); if(pm){payment=pm[1];notes=notes.replace(pm[0],"").trim()}
         const fm=notes.match(/\[FEE:(\d+)\]/); if(fm){deliveryFee=+fm[1];notes=notes.replace(fm[0],"").trim()}
         let st=(o.status||"new").toLowerCase();
@@ -477,7 +611,7 @@ async function loadData(){
         if(localSt){ st = localSt; if(localSt !== "pending") pending = false; }
         return{id:o.id,name:o.name,phone:o.phone,address:o.address,notes,
           items:(o.items||"").split(", ").filter(Boolean).map(t=>{const m=t.match(/(\d+)×\s*(.+)/);return m?{qty:+m[1],name:m[2]}:{qty:1,name:t}}),
-          total:+o.total||0,status:st,created:o.timestamp,payment,deliveryFee,confirmCode,pending};
+          total:+o.total||0,status:st,created:o.timestamp,payment,deliveryFee,confirmCode,pending,fulfillMode};
       });
       const newIds=new Set(mapped.map(o=>o.id));
       let hasNew=false;
@@ -489,6 +623,68 @@ async function loadData(){
   renderOrders();renderMenuEditor();renderNewOrderItems();
 }
 function ageMinutes(ts){if(!ts)return 0;const t=typeof ts==="number"?ts:Date.parse(ts);return isNaN(t)?0:Math.floor((Date.now()-t)/60000)}
+
+
+function appBasePath(){
+  // Supports GitHub Pages project sites: /repo-name/
+  try{
+    const path = location.pathname || "/";
+    if (path.endsWith(".html")) {
+      const dir = path.substring(0, path.lastIndexOf("/") + 1);
+      return dir || "/";
+    }
+    return path.endsWith("/") ? path : (path + "/");
+  }catch(e){ return "/"; }
+}
+function resolveAsset(src){
+  if(!src) return "";
+  if(/^https?:\/\//i.test(src) || src.startsWith("data:") || src.startsWith("blob:")) return src;
+  if(src.startsWith("/")) return src;
+  return appBasePath() + src.replace(/^\.\//, "");
+}
+function safeImgTag(src, alt, cls){
+  const primary = resolveAsset(src);
+  const fallbacks = [resolveAsset("kota.jpg"), resolveAsset("hero.jpg")].filter(Boolean);
+  const all = [primary].concat(fallbacks).filter((v,i,a)=>v && a.indexOf(v)===i);
+  const chain = all.map(u => u.replace(/'/g, "%27"));
+  // onerror walks fallback list without throwing console loops
+  return `<img class="${cls||""}" alt="${(alt||"").replace(/"/g,"&quot;")}" loading="lazy" decoding="async" data-fallbacks='${JSON.stringify(chain).replace(/'/g,"&#39;")}' src="${chain[0]||""}" onerror="window.__imgFallback&&window.__imgFallback(this)">`;
+}
+window.__imgFallback = function(img){
+  try{
+    if(!img || img.dataset.failed === "1") return;
+    let list = [];
+    try { list = JSON.parse((img.getAttribute("data-fallbacks")||"[]").replace(/&#39;/g,"'")); } catch(e){}
+    let i = parseInt(img.dataset.fbIndex || "0", 10) + 1;
+    while(i < list.length && list[i] === img.src) i++;
+    if(i < list.length){
+      img.dataset.fbIndex = String(i);
+      img.src = list[i];
+      return;
+    }
+    img.dataset.failed = "1";
+    img.style.display = "none";
+    const ph = img.nextElementSibling;
+    if(ph && ph.classList && ph.classList.contains("chip-ph")) ph.style.display = "inline-flex";
+    if(ph && ph.classList && ph.classList.contains("thumb-ph")) ph.style.display = "flex";
+  }catch(e){}
+};
+
+function itemImageForName(name){
+  const n=String(name||"").trim().toLowerCase();
+  if(!n) return "";
+  const list = (menu && menu.length) ? menu : DEFAULT_MENU;
+  // exact then partial match
+  let hit = list.find(m => String(m.name||"").trim().toLowerCase() === n);
+  if(!hit) hit = list.find(m => n.includes(String(m.name||"").toLowerCase()) || String(m.name||"").toLowerCase().includes(n));
+  return (hit && hit.image) ? hit.image : "";
+}
+function orderItemChip(i){
+  const src = itemImageForName(i.name) || "kota.jpg";
+  const img = safeImgTag(src, i.name, "") + `<span class="chip-ph" style="display:none">🍽</span>`;
+  return `<span class="item-chip">${img}<span>${i.qty}× ${i.name}</span></span>`;
+}
+
 function renderOrders(){
   const list=document.getElementById("orders-list");
   const active=orders.filter(o=>o.status!=="done"&&o.status!=="delivered");
@@ -499,7 +695,9 @@ function renderOrders(){
   list.innerHTML=active.map(o=>{
     const mins=ageMinutes(o.created);
     const ageHtml=mins>=20?`<div class="age old">⏱ ${mins} min ago — LATE</div>`:(mins>0?`<div class="age">⏱ ${mins} min ago</div>`:"");
-    const itemsHtml=(o.items||[]).map(i=>`<div class="receipt-item"><span><span class="qty">${i.qty}×</span> ${i.name}</span></div>`).join("")||"<div class='receipt-item'>—</div>";
+    const itemsHtml=(o.items||[]).length
+      ? `<div class="item-chips">${(o.items||[]).map(orderItemChip).join("")}</div>`
+      : "<div class='receipt-item'>—</div>";
     const fee=o.deliveryFee?`<div class="receipt-row"><span class="lbl">Delivery fee</span><span>R${o.deliveryFee}</span></div>`:"";
     const timeStr=o.created?(typeof o.created==="number"?new Date(o.created):new Date(o.created)).toLocaleTimeString("en-ZA",{hour:"2-digit",minute:"2-digit"}):"";
     let actions="";
@@ -690,7 +888,11 @@ function sendToDriver(id){
 }
 function renderNewOrderItems(){
   const el=document.getElementById("new-order-items");
-  el.innerHTML=menu.map(m=>`<div class="item-check"><input type="checkbox" data-id="${m.id}" data-name="${m.name}" data-price="${m.price}" id="chk-${m.id}"><label for="chk-${m.id}">${m.name} <span style="color:var(--muted)">R${m.price}</span></label><input type="number" class="qty" data-id="${m.id}" value="1" min="1" max="20" disabled></div>`).join("");
+  el.innerHTML=menu.map(m=>`<div class="item-check">
+    <input type="checkbox" data-id="${m.id}" data-name="${m.name}" data-price="${m.price}" id="chk-${m.id}">
+    <label for="chk-${m.id}"><span class="item-name">${m.name}</span><span class="item-price">R${m.price}</span></label>
+    <input type="number" class="qty" data-id="${m.id}" value="1" min="1" max="20" disabled title="Qty">
+  </div>`).join("");
   el.querySelectorAll('input[type=checkbox]').forEach(cb=>{cb.onchange=()=>{const q=el.querySelector(`.qty[data-id="${cb.dataset.id}"]`);q.disabled=!cb.checked}});
 }
 function addOrder(){
